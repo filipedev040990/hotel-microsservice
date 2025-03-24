@@ -28,6 +28,7 @@
 ## Input Banco de dados
 {
   id: string
+  externalCode: string
   name: string
   country: string
   state: string
@@ -40,7 +41,7 @@
   updatedAt: Date
 }
 
-⛔Entity
+✅Entity
 ⛔Usecase
 ⛔Controller
 ⛔Rota
