@@ -6,5 +6,5 @@ export type CreateHotelUseCaseInput = {
 }
 
 export interface CreateHotelUseCaseInterface {
-  execute: (input: CreateHotelUseCaseInput) => Promise<void>
+  execute: (input: CreateHotelUseCaseInput) => Promise<{ id: string }>
 }

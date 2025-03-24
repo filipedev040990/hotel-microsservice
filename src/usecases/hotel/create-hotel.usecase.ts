@@ -13,10 +13,11 @@ export class CreateHotelUseCase implements CreateHotelUseCaseInterface {
     this.loggerService = params.loggerService
   }
 
-  async execute (input: CreateHotelUseCaseInput): Promise<void> {
+  async execute (input: CreateHotelUseCaseInput): Promise<{ id: string }> {
     try {
       const hotel = HotelEntity.build(input)
       await this.hotelRepository.save(this.makeRepositoryInput(hotel))
+      return { id: hotel.id }
     } catch (error) {
       this.loggerService.error('CreateHotelUseCase error', { error })
       throw error

@@ -18,8 +18,8 @@ const fakeHotelEntity: HotelEntity = {
     street: 'Rua Teste',
     number: 123
   },
-  createdAt: new Date(),
-  updatedAt: new Date()
+  createdAt: new Date('2025-03-01'),
+  updatedAt: new Date('2025-03-01')
 }
 
 const params: any = {
@@ -32,7 +32,7 @@ describe('CreateHotelUseCase', () => {
   let input: CreateHotelUseCaseInput
 
   beforeAll(() => {
-    MockDate.set(new Date())
+    MockDate.set(new Date('2025-03-01'))
   })
 
   beforeEach(() => {
@@ -79,8 +79,8 @@ describe('CreateHotelUseCase', () => {
       district: 'Centro',
       street: 'Rua Teste',
       number: 123,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: new Date('2025-03-01'),
+      updatedAt: new Date('2025-03-01')
     })
   })
 
@@ -94,5 +94,11 @@ describe('CreateHotelUseCase', () => {
     const promise = sut.execute(input)
 
     await expect(promise).rejects.toThrowError(error)
+  })
+
+  test('should return a correct response', async () => {
+    const output = await sut.execute(input)
+
+    expect(output).toEqual({ id: 'anyHotelId' })
   })
 })

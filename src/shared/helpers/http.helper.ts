@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/domain/adapter/controllers/controller.interface'
+import { HttpResponse } from '@/domain/controller/controller.interface'
 
 export const success = (statusCode: number, body: any): HttpResponse => ({
   statusCode,

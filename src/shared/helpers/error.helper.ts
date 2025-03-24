@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/domain/adapter/controllers/controller.interface'
+import { HttpResponse } from '@/domain/controller/controller.interface'
 import { ConflictResourceError, ForbiddenError, InvalidJwtError, InvalidParamError, JwtMissingError, MissingParamError, UnauthorizedError } from '../errors'
 import { badRequest, conflict, forbidden, serverError, unauthorized } from './http.helper'
 
