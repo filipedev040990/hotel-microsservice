@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "resolveJsonModule": true,
-    "incremental": true,
+    "incremental": false,
     "outDir": "dist",
-    "rootDirs": ["src"],
+    "rootDir": "src",
     "target": "es2021",
     "sourceMap": false,
     "skipLibCheck": true,
@@ -21,5 +21,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "tests/**/*.ts"
+  ]
 }

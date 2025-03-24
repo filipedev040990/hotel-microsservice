@@ -1,6 +1,6 @@
-import { ForbiddenError, InvalidJwtError, InvalidParamError, JwtMissingError, MissingParamError, UnauthorizedError } from '../errors'
-import { HttpResponse } from '../types'
-import { badRequest, forbidden, serverError, unauthorized } from './http.helper'
+import { HttpResponse } from '@/domain/adapter/controllers/controller.interface'
+import { ConflictResourceError, ForbiddenError, InvalidJwtError, InvalidParamError, JwtMissingError, MissingParamError, UnauthorizedError } from '../errors'
+import { badRequest, conflict, forbidden, serverError, unauthorized } from './http.helper'
 
 export const handleError = (error: any): HttpResponse => {
   if (error instanceof InvalidParamError || error instanceof MissingParamError) {
@@ -13,6 +13,10 @@ export const handleError = (error: any): HttpResponse => {
 
   if (error instanceof ForbiddenError || error instanceof JwtMissingError || error instanceof InvalidJwtError) {
     return forbidden(error)
+  }
+
+  if (error instanceof ConflictResourceError) {
+    return conflict(error)
   }
 
   return serverError(error)

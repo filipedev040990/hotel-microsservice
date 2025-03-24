@@ -1,5 +1,4 @@
-import { HttpResponse } from '@/shared/types'
-import { logger } from './logger.helper'
+import { HttpResponse } from '@/domain/adapter/controllers/controller.interface'
 
 export const success = (statusCode: number, body: any): HttpResponse => ({
   statusCode,
@@ -31,7 +30,6 @@ export const forbidden = (error: Error): HttpResponse => ({
 })
 
 export const serverError = (error: Error): HttpResponse => {
-  logger.error(error)
   return {
     statusCode: 500,
     body: {

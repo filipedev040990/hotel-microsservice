@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --loglevel verbose
+RUN npm install --loglevel verbose --legacy-peer-deps
 
 RUN apt-get update
 
