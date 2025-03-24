@@ -10,7 +10,7 @@ export class HotelEntity {
     public name: string,
     public address: Address,
     public createdAt: Date,
-    public updatedAt?: Date
+    public updatedAt: Date
   ) {}
 
   public static build (input: BuildHotelEntityInput): HotelEntity {
