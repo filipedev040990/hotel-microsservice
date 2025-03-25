@@ -1,8 +1,8 @@
-import { AppContainer } from '@/domain/container/container.types'
 import { HotelEntity } from '@/domain/entities/hotel.entity'
 import { HotelRepositoryData, HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CreateHotelUseCaseInput, CreateHotelUseCaseInterface } from '@/domain/usecases/create-hotel-usecase.interface'
+import { AppContainer } from '@/infra/container/register'
 
 export class CreateHotelUseCase implements CreateHotelUseCaseInterface {
   private readonly hotelRepository: HotelRepositoryInterface
