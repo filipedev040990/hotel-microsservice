@@ -1,7 +1,22 @@
-### Endpoint POST /hotel
+### Endpoint PATCH /hotel
 
 ## Input endpoint
 {
+  name?: string
+  address?: {
+    country?: string
+    state?: string
+    city?: string
+    district?: string
+    street?: string
+    number?: number
+    complement?: string
+  }
+}
+
+## Output endpoint
+{
+  id: string
   name: string
   address: {
     country: string
@@ -10,19 +25,14 @@
     district: string
     street: string
     number: number
-    complement?: string
+    complement: string
   }
-}
-
-## Output endpoint
-{
-  id: string
 }
 
 
 ## Requisitos
-✅ Validar dados de entrada
-✅ Salvar os dados
+⛔ Validar dados de entrada
+⛔ Atualizar os dados
 
 
 ## Input Banco de dados
@@ -42,8 +52,8 @@
 }
 
 ✅Entity
-✅Usecase
-✅Controller
-✅Rota
+⛔Usecase
+⛔Controller
+⛔Rota
 
 ✅⛔

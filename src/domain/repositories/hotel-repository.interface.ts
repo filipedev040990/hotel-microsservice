@@ -15,4 +15,6 @@ export type HotelRepositoryData = {
 
 export interface HotelRepositoryInterface {
   save: (input: HotelRepositoryData) => Promise<void>
+  update: (input: HotelRepositoryData) => Promise<void>
+  getById: (id: string) => Promise<HotelRepositoryData | null>
 }
