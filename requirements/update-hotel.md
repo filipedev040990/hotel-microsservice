@@ -31,8 +31,8 @@
 
 
 ## Requisitos
-⛔ Validar dados de entrada
-⛔ Atualizar os dados
+✅ Validar dados de entrada
+✅ Atualizar os dados
 
 
 ## Input Banco de dados
@@ -52,8 +52,8 @@
 }
 
 ✅Entity
-⛔Usecase
-⛔Controller
-⛔Rota
+✅Usecase
+✅Controller
+✅Rota
 
 ✅⛔

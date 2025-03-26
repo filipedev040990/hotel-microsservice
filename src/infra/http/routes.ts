@@ -14,4 +14,10 @@ router.post(
   expressRouteAdapter(container.resolve('createHotelController'))
 )
 
+router.patch(
+  '/hotel/:id',
+  validateSchema('updateHotelSchema'),
+  expressRouteAdapter(container.resolve('updateHotelController'))
+)
+
 export { router }

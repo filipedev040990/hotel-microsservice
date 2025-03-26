@@ -115,6 +115,7 @@ describe('UpdateHotelUseCase', () => {
     expect(spy).toHaveBeenCalledWith({
       id: 'anyHotelId',
       name: 'New Hotel Name',
+      externalCode: 'ABC-123',
       address: {
         country: 'Brasil',
         city: 'Barbacena',

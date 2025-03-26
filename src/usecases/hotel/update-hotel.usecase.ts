@@ -2,11 +2,11 @@ import { HotelEntity } from '@/domain/entities/hotel.entity'
 import { Address, BuildHotelEntityInput } from '@/domain/entities/hotel.types'
 import { HotelRepositoryData, HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { UpdateHotelUseCaseInput } from '@/domain/usecases/update-hotel-usecase.interface'
+import { UpdateHotelUseCaseInput, UpdateHotelUseCaseInterface } from '@/domain/usecases/update-hotel-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
-export class UpdateHotelUseCase {
+export class UpdateHotelUseCase implements UpdateHotelUseCaseInterface {
   private readonly hotelRepository: HotelRepositoryInterface
   private readonly loggerService: LoggerServiceInterface
 
@@ -15,7 +15,7 @@ export class UpdateHotelUseCase {
     this.loggerService = params.loggerService
   }
 
-  async execute (input: UpdateHotelUseCaseInput): Promise<void> {
+  async execute (input: UpdateHotelUseCaseInput): Promise<HotelRepositoryData> {
     try {
       this.validate(input)
 
@@ -23,7 +23,9 @@ export class UpdateHotelUseCase {
 
       const hotelEntity = HotelEntity.build(this.makeEntityInput(hotelExisting, input))
 
-      const updatedHotel = await this.hotelRepository.update(this.makeRepositoryInput(hotelEntity))
+      const updatedHotel = this.makeRepositoryInput(hotelEntity)
+
+      await this.hotelRepository.update(updatedHotel)
 
       return updatedHotel
     } catch (error) {
@@ -62,6 +64,7 @@ export class UpdateHotelUseCase {
     return {
       id: existingHotel.id,
       name: input.name ?? existingHotel.name,
+      externalCode: existingHotel.externalCode,
       address: {
         country: input?.address?.country ?? existingHotel.country,
         state: input?.address?.state ?? existingHotel.state,
