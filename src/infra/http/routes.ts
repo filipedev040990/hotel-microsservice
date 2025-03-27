@@ -8,6 +8,7 @@ const router = Router()
 
 router.use(requestIdMiddleware)
 
+// Hotel
 router.post(
   '/hotel',
   validateSchema('createHotelSchema'),
@@ -18,6 +19,13 @@ router.patch(
   '/hotel/:id',
   validateSchema('updateHotelSchema'),
   expressRouteAdapter(container.resolve('updateHotelController'))
+)
+
+// Room
+router.post(
+  '/room',
+  validateSchema('createRoomSchema'),
+  expressRouteAdapter(container.resolve('createRoomController'))
 )
 
 export { router }

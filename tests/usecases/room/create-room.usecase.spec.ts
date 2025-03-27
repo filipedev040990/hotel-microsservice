@@ -1,8 +1,9 @@
 import { RoomEntity } from '@/domain/entities/room.entity'
+import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CreateRoomUseCaseInput } from '@/domain/usecases/create-room-usecase.interface'
-import { ConflictResourceError } from '@/shared/errors'
+import { ConflictResourceError, InvalidParamError } from '@/shared/errors'
 import { CreateRoomUseCase } from '@/usecases/room/create-room.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
@@ -23,9 +24,24 @@ const fakeEntity: RoomEntity = {
   updatedAt: new Date()
 }
 
+const fakeHotelRepositoryData = {
+  id: 'anyHotelId',
+  name: 'Hotel Top',
+  externalCode: 'ABC-123',
+  country: 'Brazil',
+  city: 'Barbacena',
+  state: 'MG',
+  district: 'Centro',
+  street: 'Rua Teste',
+  number: 123,
+  createdAt: new Date('2025-03-01'),
+  updatedAt: new Date('2025-03-01')
+}
+
 const params: any = {
   roomRepository: mock<RoomRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  hotelRepository: mock<HotelRepositoryInterface>()
 }
 
 describe('CreateRoomUseCase', () => {
@@ -51,6 +67,7 @@ describe('CreateRoomUseCase', () => {
     }
     jest.spyOn(RoomEntity, 'build').mockReturnValue(fakeEntity)
     jest.spyOn(params.roomRepository, 'getByNumberAndHotelId').mockResolvedValue(null)
+    jest.spyOn(params.hotelRepository, 'getById').mockResolvedValue(fakeHotelRepositoryData)
   })
 
   afterAll(() => {
@@ -75,6 +92,21 @@ describe('CreateRoomUseCase', () => {
       hotelId: 'anyHotelId'
 
     })
+  })
+
+  test('should call HotelRepository.getById once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(params.hotelRepository.getById).toHaveBeenCalledTimes(1)
+    expect(params.hotelRepository.getById).toHaveBeenCalledWith('anyHotelId')
+  })
+
+  test('should throw if HotelRepository.getById returns null', async () => {
+    jest.spyOn(params.hotelRepository, 'getById').mockResolvedValueOnce(null)
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrowError(new InvalidParamError('hotelId'))
   })
 
   test('should call RoomRepository.getByNumberAndHotelId once and with correct values', async () => {
