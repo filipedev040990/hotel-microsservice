@@ -10,6 +10,7 @@ import { LoggerService } from '@/shared/services/logger.service'
 import { UpdateHotelUseCaseInterface } from '@/domain/usecases/update-hotel-usecase.interface'
 import { UpdateHotelUseCase } from '@/usecases/hotel/update-hotel.usecase'
 import { UpdateHotelController } from '@/controllers/hotel/update-hotel.controller'
+import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 
 export type AppContainer = {
   hotelRepository: HotelRepositoryInterface
@@ -18,6 +19,7 @@ export type AppContainer = {
   createHotelController: ControllerInterface
   updateHotelUseCase: UpdateHotelUseCaseInterface
   updateHotelController: ControllerInterface
+  roomRepository: RoomRepositoryInterface
 }
 
 const container = createContainer()
