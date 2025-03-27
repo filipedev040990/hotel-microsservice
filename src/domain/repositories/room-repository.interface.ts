@@ -8,6 +8,7 @@ export type RoomRepositoryData = {
   price: number
   amenities: string
   floor: number
+  status: string
   hotelId: string
   createdAt: Date
   updatedAt: Date

@@ -26,6 +26,7 @@ model Hotel {
   complement   String?
   createdAt    DateTime
   updatedAt    DateTime
+  Room         Room[]
 
   @@map("hotels")
 }
@@ -42,4 +43,23 @@ model Request {
   updatedAt DateTime
 
   @@map("requests")
+}
+
+model Room {
+  id           String   @id
+  externalCode String   @unique
+  number       Int
+  type         String
+  capacity     Int
+  description  String   @db.Text
+  price        Int
+  status       String
+  amenities    String   @db.Text
+  floor        Int
+  hotelId      String
+  hotel        Hotel    @relation(fields: [hotelId], references: [id])
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  @@map("rooms")
 }
