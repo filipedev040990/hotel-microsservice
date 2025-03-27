@@ -11,6 +11,7 @@ import { UpdateHotelUseCaseInterface } from '@/domain/usecases/update-hotel-usec
 import { UpdateHotelUseCase } from '@/usecases/hotel/update-hotel.usecase'
 import { UpdateHotelController } from '@/controllers/hotel/update-hotel.controller'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CreateRoomUseCaseInterface } from '@/domain/usecases/create-room-usecase.interface'
 
 export type AppContainer = {
   hotelRepository: HotelRepositoryInterface
@@ -20,6 +21,7 @@ export type AppContainer = {
   updateHotelUseCase: UpdateHotelUseCaseInterface
   updateHotelController: ControllerInterface
   roomRepository: RoomRepositoryInterface
+  createRoomUseCase: CreateRoomUseCaseInterface
 }
 
 const container = createContainer()
