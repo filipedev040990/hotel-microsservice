@@ -1,3 +1,5 @@
+import { ListHotelsUseCaseOutput } from '../usecases/list-hotels-usecase.interface'
+
 export type HotelRepositoryData = {
   id: string
   externalCode: string
@@ -17,4 +19,5 @@ export interface HotelRepositoryInterface {
   save: (input: HotelRepositoryData) => Promise<void>
   update: (input: HotelRepositoryData) => Promise<void>
   getById: (id: string) => Promise<HotelRepositoryData | null>
+  find: (hotelId?: string) => Promise<ListHotelsUseCaseOutput[]>
 }

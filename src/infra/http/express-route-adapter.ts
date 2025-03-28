@@ -28,15 +28,23 @@ export const expressRouteAdapter = (controller: ControllerInterface) => {
     const { statusCode, body } = await controller.execute(input)
 
     const output = (statusCode >= 200 && statusCode <= 499) ? body : { error: body.message }
+    let outputToLog = null
 
-    await logRequest(req, input, statusCode, output)
+    if (canLogRequest(req)) {
+      await logRequest(req, input, statusCode, output)
+      outputToLog = JSON.stringify(output)
+    }
 
     loggerService.info('Finished request', {
-      output: JSON.stringify(output)
+      output: outputToLog
     })
 
     res.status(statusCode).json(output)
   }
+}
+
+const canLogRequest = (req: Request): boolean => {
+  return req.method !== 'GET' && req.url !== '/hotel'
 }
 
 const logRequest = async (req: Request, input: any, statusCode: number, output: any): Promise<void> => {

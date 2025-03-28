@@ -21,6 +21,11 @@ router.patch(
   expressRouteAdapter(container.resolve('updateHotelController'))
 )
 
+router.get(
+  '/hotel/:id?',
+  expressRouteAdapter(container.resolve('listHotelsController'))
+)
+
 // Room
 router.post(
   '/room',

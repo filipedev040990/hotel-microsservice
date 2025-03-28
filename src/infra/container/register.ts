@@ -18,6 +18,9 @@ import { RoomRepository } from '../database/room.repository'
 import { UpdateRoomUseCaseInterface } from '@/domain/usecases/update-room-usecase.interface'
 import { UpdateRoomUseCase } from '@/usecases/room/update-room.usecase'
 import { UpdateRoomController } from '@/controllers/room/update-room.controller'
+import { ListHotelsUseCaseInterface } from '@/domain/usecases/list-hotels-usecase.interface'
+import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
+import { ListHotelsController } from '@/controllers/hotel/list-hotels.controller'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -31,6 +34,8 @@ export type AppContainer = {
   roomRepository: RoomRepositoryInterface
   updateRoomUseCase: UpdateRoomUseCaseInterface
   updateRoomController: ControllerInterface
+  listHotelsUseCase: ListHotelsUseCaseInterface
+  listHotelsController: ControllerInterface
 }
 
 const container = createContainer()
@@ -41,12 +46,14 @@ container.register({
   updateHotelController: asClass(UpdateHotelController).singleton(),
   createRoomController: asClass(CreateRoomController).singleton(),
   updateRoomController: asClass(UpdateRoomController).singleton(),
+  listHotelsController: asClass(ListHotelsController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
   updateHotelUseCase: asClass(UpdateHotelUseCase).singleton(),
   createRoomUseCase: asClass(CreateRoomUseCase).singleton(),
   updateRoomUseCase: asClass(UpdateRoomUseCase).singleton(),
+  listHotelsUseCase: asClass(ListHotelsUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),
