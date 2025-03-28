@@ -116,7 +116,7 @@ describe('CreateRoomUseCase', () => {
     expect(params.roomRepository.getByNumberAndHotelId).toHaveBeenCalledWith(123, 'anyHotelId')
   })
 
-  test('should throw if RoomRepository.getByNumberAndHotelId throws', async () => {
+  test('should throw if RoomRepository.getByNumberAndHotelId returns a result', async () => {
     jest.spyOn(params.roomRepository, 'getByNumberAndHotelId').mockResolvedValueOnce(fakeEntity)
 
     const promise = sut.execute(input)
