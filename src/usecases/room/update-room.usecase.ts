@@ -36,6 +36,12 @@ export class UpdateRoomUseCase implements UpdateRoomUseCaseInterface {
     if (!input.id) {
       throw new MissingParamError('id')
     }
+
+    const { id, ...data } = input
+
+    if (Object.keys(data).length === 0) {
+      throw new InvalidParamError('Provide at least one field to update')
+    }
   }
 
   async getRoom (input: UpdateRoomUseCaseInput): Promise<RoomRepositoryData> {

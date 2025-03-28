@@ -84,6 +84,16 @@ describe('UpdateRoomUseCase', () => {
     await expect(promise).rejects.toThrowError(new MissingParamError('id'))
   })
 
+  test('should throw if input is empty', async () => {
+    input = {
+      id: 'anyRoomId'
+    }
+
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrowError(new InvalidParamError('Provide at least one field to update'))
+  })
+
   test('should call RoomRepository.getById once and with correct values', async () => {
     await sut.execute(input)
 

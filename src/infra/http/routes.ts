@@ -28,4 +28,10 @@ router.post(
   expressRouteAdapter(container.resolve('createRoomController'))
 )
 
+router.patch(
+  '/room/:id',
+  validateSchema('updateRoomSchema'),
+  expressRouteAdapter(container.resolve('updateRoomController'))
+)
+
 export { router }

@@ -1,4 +1,4 @@
-import { CreateRoomController } from '@/controllers/room/create-hotel.controller'
+import { CreateRoomController } from '@/controllers/room/create-room.controller'
 import { HttpRequest } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CreateRoomUseCaseInterface } from '@/domain/usecases/create-room-usecase.interface'
