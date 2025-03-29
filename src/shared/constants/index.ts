@@ -19,3 +19,5 @@ export const ROOM_STATUS = {
   RESERVED: 'reserved',
   IN_PROCESS_BOOKING: 'in_process_booking'
 }
+
+export const HOTELS_CACHE_KEY = 'hotels_list'

@@ -1,18 +1,22 @@
 import { HotelEntity } from '@/domain/entities/hotel/hotel.entity'
 import { Address, BuildHotelEntityInput } from '@/domain/entities/hotel/hotel.types'
 import { HotelRepositoryData, HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { UpdateHotelUseCaseInput, UpdateHotelUseCaseInterface } from '@/domain/usecases/hotel/update-hotel-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
+import { HOTELS_CACHE_KEY } from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class UpdateHotelUseCase implements UpdateHotelUseCaseInterface {
   private readonly hotelRepository: HotelRepositoryInterface
   private readonly loggerService: LoggerServiceInterface
+  private readonly cacheService: CacheServiceInterface
 
   constructor (params: AppContainer) {
     this.hotelRepository = params.hotelRepository
     this.loggerService = params.loggerService
+    this.cacheService = params.cacheService
   }
 
   async execute (input: UpdateHotelUseCaseInput): Promise<HotelRepositoryData> {
@@ -26,6 +30,8 @@ export class UpdateHotelUseCase implements UpdateHotelUseCaseInterface {
       const updatedHotel = this.makeRepositoryInput(hotelEntity)
 
       await this.hotelRepository.update(updatedHotel)
+
+      await this.cacheService.del(HOTELS_CACHE_KEY)
 
       return updatedHotel
     } catch (error) {

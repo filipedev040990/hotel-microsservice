@@ -28,6 +28,8 @@ import { CreateReservationUseCase } from '@/usecases/hotel/create-reservation.us
 import { CreateReservationController } from '@/controllers/hotel/create-reservation.controller'
 import { ReservationRepository } from '../database/reservation.repository'
 import { PubSubService } from '@/shared/services/pub-sub.service'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
+import { CacheService } from '@/shared/services/cache.service'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -47,6 +49,7 @@ export type AppContainer = {
   createReservationController: ControllerInterface
   reservationRepository: ReservartionRepositoryInterface
   pubSubService: PubSubServiceInterface
+  cacheService: CacheServiceInterface
 }
 
 const container = createContainer()
@@ -75,7 +78,8 @@ container.register({
 
   // Services
   loggerService: asClass(LoggerService).singleton(),
-  pubSubService: asClass(PubSubService).singleton()
+  pubSubService: asClass(PubSubService).singleton(),
+  cacheService: asClass(CacheService).singleton()
 })
 
 export { container }

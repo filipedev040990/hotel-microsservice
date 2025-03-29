@@ -1,4 +1,5 @@
 export type ListHotelsUseCaseOutput = {
+  id: string
   name: string
   address: {
     country: string

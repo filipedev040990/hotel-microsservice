@@ -30,6 +30,7 @@ export class HotelRepository implements HotelRepositoryInterface {
   async find (hotelId?: string): Promise<ListHotelsUseCaseOutput[]> {
     const options: any = {
       select: {
+        id: true,
         name: true,
         country: true,
         state: true,
@@ -63,6 +64,7 @@ export class HotelRepository implements HotelRepositoryInterface {
 
     const formattedOutput: ListHotelsUseCaseOutput[] = output.map((hotel: any) => {
       return {
+        id: hotel.id,
         name: hotel.name,
         address: {
           country: hotel.country,
