@@ -7,7 +7,6 @@ export type PaymentDetails = {
 export type BuildReservationEntityInput = {
   id?: string
   externalCode?: string
-  hotelId: string
   roomId: string
   checkIn: string
   checkOut: string

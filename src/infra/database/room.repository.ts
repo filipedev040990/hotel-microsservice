@@ -20,4 +20,8 @@ export class RoomRepository implements RoomRepositoryInterface {
     const room = await prismaClient.room.findFirst({ where: { id } })
     return room ?? null
   }
+
+  async updateStatus (roomId: string, status: string): Promise<void> {
+    await prismaClient.room.update({ where: { id: roomId }, data: { status } })
+  }
 }

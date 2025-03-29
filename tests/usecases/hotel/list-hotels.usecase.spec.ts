@@ -22,6 +22,7 @@ const hotelRepositoryOutput: ListHotelsUseCaseOutput [] = [{
   },
   rooms: [
     {
+      id: 'anyID',
       externalCode: 'RM101',
       number: 101,
       type: 'Suite',
@@ -33,6 +34,7 @@ const hotelRepositoryOutput: ListHotelsUseCaseOutput [] = [{
       floor: 10
     },
     {
+      id: 'anotherId',
       externalCode: 'RM102',
       number: 102,
       type: 'Standard',

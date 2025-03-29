@@ -63,3 +63,21 @@ model Room {
 
   @@map("rooms")
 }
+
+model Reservation {
+  id               String   @id
+  externalCode     String   @unique
+  roomId           String
+  checkIn          String
+  checkOut         String
+  guestEmail       String
+  paymentTotal     Int
+  paymentMethod    String
+  paymentCardToken String
+  paymentStatus    String
+  status           String
+  createdAt        DateTime
+  updatedAt        DateTime
+
+  @@map("reservations")
+}

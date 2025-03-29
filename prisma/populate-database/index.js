@@ -58,13 +58,13 @@ async function createRoom (hotelId, usedRoomNumbers) {
 }
 
 async function populateDatabase () {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 5; i++) {
     const hotelId = await createHotel()
     if (hotelId) {
       const usedRoomNumbers = new Set() // Conjunto para armazenar números de quartos já criados para este hotel
 
       // Criar 10 quartos para cada hotel, garantindo números únicos
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 2; j++) {
         await createRoom(hotelId, usedRoomNumbers)
       }
     }

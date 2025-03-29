@@ -9,13 +9,13 @@ export const RESERVATION_STATUS = {
 export const PAYMENT_STATUS = {
   PROCESSING: 'processing',
   CONFIRMED: 'confirmed',
-  REFUSED: 'refused'
+  CANCELED: 'canceled'
 }
 
 export const RESERVATION_REQUEST_CHANNEL = 'reservation_request'
 
 export const ROOM_STATUS = {
   AVAILABLE: 'available',
-  RESERVED: 'available',
+  RESERVED: 'reserved',
   IN_PROCESS_BOOKING: 'in_process_booking'
 }

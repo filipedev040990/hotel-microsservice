@@ -40,6 +40,7 @@ export class HotelRepository implements HotelRepositoryInterface {
         complement: true,
         Room: {
           select: {
+            id: true,
             externalCode: true,
             number: true,
             type: true,
@@ -74,6 +75,7 @@ export class HotelRepository implements HotelRepositoryInterface {
         },
         rooms: hotel.Room.map((room: any) => {
           return {
+            id: room.id,
             externalCode: room.externalCode,
             number: room.number,
             type: room.type,

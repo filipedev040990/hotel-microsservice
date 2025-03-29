@@ -13,6 +13,7 @@ export type ListHotelsUseCaseOutput = {
 } | []
 
 export type Room = {
+  id: string
   externalCode: string
   number: number
   type: string

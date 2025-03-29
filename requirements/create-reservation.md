@@ -6,8 +6,6 @@
   "roomId": string,
   "checkIn": string,
   "checkOut": string,
-  "guestName": string,
-  "guestEmail": string,
   "paymentDetails": {
     "total": number,
     "paymentMethod": string,

@@ -1,7 +1,6 @@
 import { PaymentDetails } from '@/domain/entities/reservation/reservation.types'
 
 export type CreateReservationUseCaseInput = {
-  hotelId: string
   roomId: string
   checkIn: string
   checkOut: string
@@ -11,7 +10,6 @@ export type CreateReservationUseCaseInput = {
 
 export type CreateReservationUseCaseOutput = {
   id: string
-  hotelId: string
   roomId: string
   checkIn: string
   checkOut: string

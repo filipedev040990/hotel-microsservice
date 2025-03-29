@@ -14,7 +14,6 @@ describe('ReservationEntity', () => {
   beforeEach(() => {
     sut = ReservationEntity
     input = {
-      hotelId: 'f6105aab-1133-41bd-bf17-1be81a9bb865',
       roomId: '2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f49',
       checkIn: '2025-04-01',
       checkOut: '2025-04-05',
@@ -32,7 +31,7 @@ describe('ReservationEntity', () => {
   })
 
   test('should throw if any required field is empty', () => {
-    const requiredFields: Array<keyof BuildReservationEntityInput> = ['hotelId', 'roomId', 'checkIn', 'checkOut', 'guestEmail', 'paymentDetails']
+    const requiredFields: Array<keyof BuildReservationEntityInput> = ['roomId', 'checkIn', 'checkOut', 'guestEmail', 'paymentDetails']
 
     for (const field of requiredFields) {
       const fieldBackup = input[field]
@@ -104,7 +103,6 @@ describe('ReservationEntity', () => {
     const entity = sut.build(input)
 
     expect(entity.id).toBeDefined()
-    expect(entity.hotelId).toBe('f6105aab-1133-41bd-bf17-1be81a9bb865')
     expect(entity.roomId).toBe('2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f49')
     expect(entity.checkIn).toBe('2025-04-01')
     expect(entity.checkOut).toBe('2025-04-05')

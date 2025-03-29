@@ -23,6 +23,11 @@ import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
 import { ListHotelsController } from '@/controllers/hotel/list-hotels.controller'
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
+import { CreateReservationUseCaseInterface } from '@/domain/usecases/hotel/create-reservation-usecase.interface'
+import { CreateReservationUseCase } from '@/usecases/hotel/create-reservation.usecase'
+import { CreateReservationController } from '@/controllers/hotel/create-reservation.controller'
+import { ReservationRepository } from '../database/reservation.repository'
+import { PubSubService } from '@/shared/services/pub-sub.service'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -38,6 +43,8 @@ export type AppContainer = {
   updateRoomController: ControllerInterface
   listHotelsUseCase: ListHotelsUseCaseInterface
   listHotelsController: ControllerInterface
+  createReservationUseCase: CreateReservationUseCaseInterface
+  createReservationController: ControllerInterface
   reservationRepository: ReservartionRepositoryInterface
   pubSubService: PubSubServiceInterface
 }
@@ -51,6 +58,7 @@ container.register({
   createRoomController: asClass(CreateRoomController).singleton(),
   updateRoomController: asClass(UpdateRoomController).singleton(),
   listHotelsController: asClass(ListHotelsController).singleton(),
+  createReservationController: asClass(CreateReservationController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -58,13 +66,16 @@ container.register({
   createRoomUseCase: asClass(CreateRoomUseCase).singleton(),
   updateRoomUseCase: asClass(UpdateRoomUseCase).singleton(),
   listHotelsUseCase: asClass(ListHotelsUseCase).singleton(),
+  createReservationUseCase: asClass(CreateReservationUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),
   roomRepository: asClass(RoomRepository).singleton(),
+  reservationRepository: asClass(ReservationRepository).singleton(),
 
   // Services
-  loggerService: asClass(LoggerService).singleton()
+  loggerService: asClass(LoggerService).singleton(),
+  pubSubService: asClass(PubSubService).singleton()
 })
 
 export { container }

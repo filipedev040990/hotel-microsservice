@@ -1,21 +1,22 @@
 import { ReservationEntity } from '@/domain/entities/reservation/reservation.entity'
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInput } from '@/domain/usecases/hotel/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
-import { CreateReservationUseCase } from '@/usecases/hotel/create-reservartion.usecase'
+import { CreateReservationUseCase } from '@/usecases/hotel/create-reservation.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
 const params: any = {
   reservationRepository: mock<ReservartionRepositoryInterface>(),
   roomRepository: mock<RoomRepositoryInterface>(),
-  pubSubService: mock<PubSubServiceInterface>()
+  pubSubService: mock<PubSubServiceInterface>(),
+  loggerService: mock<LoggerServiceInterface>()
 }
 
 const fakeHotelWithRoom = {
-  hotelId: 'anyHotelId',
   roomId: 'anyRoomId',
   status: 'available'
 }
@@ -23,7 +24,6 @@ const fakeHotelWithRoom = {
 const fakeReservationEntity: ReservationEntity = {
   id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
   externalCode: 'EXT123456',
-  hotelId: 'anyHotelId',
   roomId: 'anyRoomId',
   checkIn: '2050-12-31',
   checkOut: '2051-01-07',
@@ -49,7 +49,6 @@ describe('CreateReservationUseCase', () => {
   beforeEach(() => {
     sut = new CreateReservationUseCase(params)
     input = {
-      hotelId: 'anyHotelId',
       roomId: 'anyRoomId',
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
@@ -60,7 +59,7 @@ describe('CreateReservationUseCase', () => {
         total: 250000
       }
     }
-    jest.spyOn(params.reservationRepository, 'getByHotelIdAndRoomId').mockResolvedValue(fakeHotelWithRoom)
+    jest.spyOn(params.reservationRepository, 'getRoomById').mockResolvedValue(fakeHotelWithRoom)
     jest.spyOn(ReservationEntity, 'build').mockReturnValue(fakeReservationEntity)
   })
 
@@ -75,7 +74,6 @@ describe('CreateReservationUseCase', () => {
 
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      hotelId: 'anyHotelId',
       roomId: 'anyRoomId',
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
@@ -88,15 +86,15 @@ describe('CreateReservationUseCase', () => {
     })
   })
 
-  test('should call ReservationRepository.getByHotelIdAndRoomId once and with correct values', async () => {
+  test('should call ReservationRepository.getRoomById once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(params.reservationRepository.getByHotelIdAndRoomId).toHaveBeenCalledTimes(1)
-    expect(params.reservationRepository.getByHotelIdAndRoomId).toHaveBeenCalledWith('anyHotelId', 'anyRoomId')
+    expect(params.reservationRepository.getRoomById).toHaveBeenCalledTimes(1)
+    expect(params.reservationRepository.getRoomById).toHaveBeenCalledWith('anyRoomId')
   })
 
-  test('should throws if ReservationRepository.getByHotelIdAndRoomId returns null', async () => {
-    jest.spyOn(params.reservationRepository, 'getByHotelIdAndRoomId').mockResolvedValueOnce(null)
+  test('should throws if ReservationRepository.getRoomById returns null', async () => {
+    jest.spyOn(params.reservationRepository, 'getRoomById').mockResolvedValueOnce(null)
 
     const promise = sut.execute(input)
 
@@ -104,8 +102,7 @@ describe('CreateReservationUseCase', () => {
   })
 
   test('should throws if room is not available', async () => {
-    jest.spyOn(params.reservationRepository, 'getByHotelIdAndRoomId').mockResolvedValueOnce({
-      hotelId: 'anyHotelId',
+    jest.spyOn(params.reservationRepository, 'getRoomById').mockResolvedValueOnce({
       roomId: 'anyRoomId',
       status: 'reserved'
     })
@@ -129,7 +126,6 @@ describe('CreateReservationUseCase', () => {
     expect(params.pubSubService.publish).toHaveBeenCalledWith('reservation_request', JSON.stringify({
       id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
       externalCode: 'EXT123456',
-      hotelId: 'anyHotelId',
       roomId: 'anyRoomId',
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
@@ -147,13 +143,33 @@ describe('CreateReservationUseCase', () => {
 
     expect(output).toEqual({
       id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
-      hotelId: 'anyHotelId',
       roomId: 'anyRoomId',
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
       status: 'in_process_booking',
       paymentStatus: 'processing',
       createdAt: new Date('2025-03-01')
+    })
+  })
+
+  test('should call ReservationRepository.save once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(params.reservationRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.reservationRepository.save).toHaveBeenCalledWith({
+      id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
+      externalCode: 'EXT123456',
+      roomId: 'anyRoomId',
+      checkIn: '2050-12-31',
+      checkOut: '2051-01-07',
+      guestEmail: 'ze@email.com',
+      paymentCardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
+      paymentMethod: 'credit_card',
+      paymentStatus: 'processing',
+      paymentTotal: 250000,
+      status: 'in_process_booking',
+      createdAt: new Date('2025-03-01'),
+      updatedAt: new Date('2025-03-01')
     })
   })
 })
