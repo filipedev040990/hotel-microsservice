@@ -14,6 +14,7 @@ export type BuildReservationEntityInput = {
   guestName: string
   guestEmail: string
   paymentDetails: PaymentDetails
+  status?: string
   createdAt?: Date
   updatedAt?: Date
 }

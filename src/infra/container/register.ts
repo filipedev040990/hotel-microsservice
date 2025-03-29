@@ -21,6 +21,8 @@ import { UpdateRoomController } from '@/controllers/room/update-room.controller'
 import { ListHotelsUseCaseInterface } from '@/domain/usecases/hotel/list-hotels-usecase.interface'
 import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
 import { ListHotelsController } from '@/controllers/hotel/list-hotels.controller'
+import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
+import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -36,6 +38,8 @@ export type AppContainer = {
   updateRoomController: ControllerInterface
   listHotelsUseCase: ListHotelsUseCaseInterface
   listHotelsController: ControllerInterface
+  reservationRepository: ReservartionRepositoryInterface
+  pubSubService: PubSubServiceInterface
 }
 
 const container = createContainer()

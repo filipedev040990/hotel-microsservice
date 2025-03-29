@@ -1,7 +1,7 @@
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { BuildReservationEntityInput, PaymentDetails } from './reservation.types'
 import { generateExternalCode, isValidEmail, isValidString } from '@/shared/helpers/string.helper'
-import { allowedPaymentMethods } from '@/shared/constants'
+import { ALLOWED_PAYMENT_METHODS, RESERVATION_STATUS } from '@/shared/constants'
 import { randomUUID } from 'crypto'
 
 export class ReservationEntity {
@@ -15,6 +15,7 @@ export class ReservationEntity {
     public readonly guestName: string,
     public readonly guestEmail: string,
     public readonly paymentDetails: PaymentDetails,
+    public readonly status: string,
     public readonly createdAt: Date,
     public readonly updatedAt: Date
   ) {}
@@ -65,7 +66,7 @@ export class ReservationEntity {
       throw new InvalidParamError('paymentDetails.total')
     }
 
-    if (!allowedPaymentMethods.includes(paymentMethod)) {
+    if (!ALLOWED_PAYMENT_METHODS.includes(paymentMethod)) {
       throw new InvalidParamError('paymentDetails.paymentMethod')
     }
 
@@ -81,7 +82,8 @@ export class ReservationEntity {
     const now = new Date()
     const createdAt = input.createdAt ?? now
     const updatedAt = input.updatedAt ?? now
+    const status = input.status ?? RESERVATION_STATUS.PROCESSING
 
-    return new ReservationEntity(id, externalCode, hotelId, roomId, checkIn, checkOut, guestName, guestEmail, paymentDetails, createdAt, updatedAt)
+    return new ReservationEntity(id, externalCode, hotelId, roomId, checkIn, checkOut, guestName, guestEmail, paymentDetails, status, createdAt, updatedAt)
   }
 }

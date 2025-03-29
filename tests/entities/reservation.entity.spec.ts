@@ -116,5 +116,8 @@ describe('ReservationEntity', () => {
       paymentMethod: 'credit_card',
       cardToken: '2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f4f6105aab-1133-41bd-bf17-1be81a9bb8659'
     })
+    expect(entity.createdAt).toBeDefined()
+    expect(entity.updatedAt).toBeDefined()
+    expect(entity.status).toBe('processing')
   })
 })
