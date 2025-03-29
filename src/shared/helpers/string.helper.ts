@@ -27,3 +27,7 @@ export const generateExternalCode = (): string => {
 
   return `${numericPart}-${alphabeticPart}-${finalNumericPart}`
 }
+
+export const isValidString = (value: string): boolean => {
+  return value !== undefined && value.trim() !== '' && value !== null
+}
