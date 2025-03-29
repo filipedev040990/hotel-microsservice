@@ -1,6 +1,6 @@
 import { HotelRepositoryData, HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { prismaClient } from './prisma-client'
-import { ListHotelsUseCaseOutput } from '@/domain/usecases/list-hotels-usecase.interface'
+import { ListHotelsUseCaseOutput } from '@/domain/usecases/hotel/list-hotels-usecase.interface'
 
 export class HotelRepository implements HotelRepositoryInterface {
   async save (data: HotelRepositoryData): Promise<void> {

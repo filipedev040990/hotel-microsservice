@@ -1,6 +1,6 @@
 import { ControllerInterface, HttpRequest, HttpResponse } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { CreateRoomUseCaseInterface } from '@/domain/usecases/create-room-usecase.interface'
+import { CreateRoomUseCaseInterface } from '@/domain/usecases/room/create-room-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 import { handleError } from '@/shared/helpers/error.helper'
 import { success } from '@/shared/helpers/http.helper'

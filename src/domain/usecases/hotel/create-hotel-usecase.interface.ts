@@ -1,4 +1,4 @@
-import { Address } from '../entities/hotel.types'
+import { Address } from '../../entities/hotel/hotel.types'
 
 export type CreateHotelUseCaseInput = {
   name: string

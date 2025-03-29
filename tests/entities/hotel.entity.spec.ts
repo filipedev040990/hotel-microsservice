@@ -1,5 +1,5 @@
-import { HotelEntity } from '@/domain/entities/hotel.entity'
-import { BuildHotelEntityInput } from '@/domain/entities/hotel.types'
+import { HotelEntity } from '@/domain/entities/hotel/hotel.entity'
+import { BuildHotelEntityInput } from '@/domain/entities/hotel/hotel.types'
 import { MissingParamError } from '@/shared/errors'
 
 describe('HotelEntity', () => {

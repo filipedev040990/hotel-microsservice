@@ -1,6 +1,6 @@
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { ListHotelsUseCaseOutput } from '@/domain/usecases/list-hotels-usecase.interface'
+import { ListHotelsUseCaseOutput } from '@/domain/usecases/hotel/list-hotels-usecase.interface'
 import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
 import { mock } from 'jest-mock-extended'
 

@@ -1,7 +1,7 @@
 import { CreateRoomController } from '@/controllers/room/create-room.controller'
 import { HttpRequest } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { CreateRoomUseCaseInterface } from '@/domain/usecases/create-room-usecase.interface'
+import { CreateRoomUseCaseInterface } from '@/domain/usecases/room/create-room-usecase.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {

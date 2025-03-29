@@ -1,5 +1,5 @@
-import { RoomEntity } from '@/domain/entities/room.entity'
-import { BuildRoomEntityInput } from '@/domain/entities/room.types'
+import { RoomEntity } from '@/domain/entities/room/room.entity'
+import { BuildRoomEntityInput } from '@/domain/entities/room/room.types'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import MockDate from 'mockdate'
 

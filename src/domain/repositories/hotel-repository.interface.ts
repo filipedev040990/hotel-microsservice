@@ -1,4 +1,4 @@
-import { ListHotelsUseCaseOutput } from '../usecases/list-hotels-usecase.interface'
+import { ListHotelsUseCaseOutput } from '../usecases/hotel/list-hotels-usecase.interface'
 
 export type HotelRepositoryData = {
   id: string

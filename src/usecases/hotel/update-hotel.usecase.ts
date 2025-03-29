@@ -1,8 +1,8 @@
-import { HotelEntity } from '@/domain/entities/hotel.entity'
-import { Address, BuildHotelEntityInput } from '@/domain/entities/hotel.types'
+import { HotelEntity } from '@/domain/entities/hotel/hotel.entity'
+import { Address, BuildHotelEntityInput } from '@/domain/entities/hotel/hotel.types'
 import { HotelRepositoryData, HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { UpdateHotelUseCaseInput, UpdateHotelUseCaseInterface } from '@/domain/usecases/update-hotel-usecase.interface'
+import { UpdateHotelUseCaseInput, UpdateHotelUseCaseInterface } from '@/domain/usecases/hotel/update-hotel-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 

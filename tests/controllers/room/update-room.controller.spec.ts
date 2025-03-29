@@ -2,7 +2,7 @@ import { UpdateRoomController } from '@/controllers/room/update-room.controller'
 import { HttpRequest } from '@/domain/controller/controller.interface'
 import { RoomRepositoryData } from '@/domain/repositories/room-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { UpdateRoomUseCaseInterface } from '@/domain/usecases/update-room-usecase.interface'
+import { UpdateRoomUseCaseInterface } from '@/domain/usecases/room/update-room-usecase.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {

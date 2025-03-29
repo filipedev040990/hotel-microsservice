@@ -1,8 +1,8 @@
-import { RoomEntity } from '@/domain/entities/room.entity'
-import { BuildRoomEntityInput } from '@/domain/entities/room.types'
+import { RoomEntity } from '@/domain/entities/room/room.entity'
+import { BuildRoomEntityInput } from '@/domain/entities/room/room.types'
 import { RoomRepositoryData, RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { UpdateRoomUseCaseInput, UpdateRoomUseCaseInterface } from '@/domain/usecases/update-room-usecase.interface'
+import { UpdateRoomUseCaseInput, UpdateRoomUseCaseInterface } from '@/domain/usecases/room/update-room-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 import { ConflictResourceError, InvalidParamError, MissingParamError } from '@/shared/errors'
 

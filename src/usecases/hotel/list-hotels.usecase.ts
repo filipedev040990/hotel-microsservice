@@ -1,6 +1,6 @@
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { ListHotelsUseCaseInterface, ListHotelsUseCaseOutput } from '@/domain/usecases/list-hotels-usecase.interface'
+import { ListHotelsUseCaseInterface, ListHotelsUseCaseOutput } from '@/domain/usecases/hotel/list-hotels-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 
 export class ListHotelsUseCase implements ListHotelsUseCaseInterface {

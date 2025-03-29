@@ -1,4 +1,4 @@
-import { RoomRepositoryData } from '../repositories/room-repository.interface'
+import { RoomRepositoryData } from '../../repositories/room-repository.interface'
 
 export type UpdateRoomUseCaseInput = {
   id: string

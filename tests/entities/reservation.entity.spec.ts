@@ -1,5 +1,5 @@
-import { ReservationEntity } from '@/domain/entities/reservation.entity'
-import { BuildReservationEntityInput } from '@/domain/entities/reservation.types'
+import { ReservationEntity } from '@/domain/entities/reservation/reservation.entity'
+import { BuildReservationEntityInput } from '@/domain/entities/reservation/reservation.types'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import MockDate from 'mockdate'
 
