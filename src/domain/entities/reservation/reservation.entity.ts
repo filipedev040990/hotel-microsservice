@@ -1,7 +1,7 @@
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { BuildReservationEntityInput, PaymentDetails } from './reservation.types'
 import { generateExternalCode, isValidEmail, isValidString } from '@/shared/helpers/string.helper'
-import { allowedPaymentMethods } from '@/shared/constants'
+import { ALLOWED_PAYMENT_METHODS, RESERVATION_STATUS } from '@/shared/constants'
 import { randomUUID } from 'crypto'
 
 export class ReservationEntity {
@@ -12,9 +12,9 @@ export class ReservationEntity {
     public readonly roomId: string,
     public readonly checkIn: string,
     public readonly checkOut: string,
-    public readonly guestName: string,
     public readonly guestEmail: string,
     public readonly paymentDetails: PaymentDetails,
+    public readonly status: string,
     public readonly createdAt: Date,
     public readonly updatedAt: Date
   ) {}
@@ -29,7 +29,7 @@ export class ReservationEntity {
   }
 
   private static validateFields (input: BuildReservationEntityInput): void {
-    const requiredFields: Array<keyof BuildReservationEntityInput> = ['hotelId', 'roomId', 'checkIn', 'checkOut', 'guestName', 'guestEmail', 'paymentDetails']
+    const requiredFields: Array<keyof BuildReservationEntityInput> = ['hotelId', 'roomId', 'checkIn', 'checkOut', 'guestEmail', 'paymentDetails']
 
     for (const field of requiredFields) {
       if (!input[field]) {
@@ -65,7 +65,7 @@ export class ReservationEntity {
       throw new InvalidParamError('paymentDetails.total')
     }
 
-    if (!allowedPaymentMethods.includes(paymentMethod)) {
+    if (!ALLOWED_PAYMENT_METHODS.includes(paymentMethod)) {
       throw new InvalidParamError('paymentDetails.paymentMethod')
     }
 
@@ -75,13 +75,14 @@ export class ReservationEntity {
   }
 
   private static create (input: BuildReservationEntityInput): ReservationEntity {
-    const { hotelId, roomId, checkIn, checkOut, guestEmail, guestName, paymentDetails } = input
+    const { hotelId, roomId, checkIn, checkOut, guestEmail, paymentDetails } = input
     const id = input.id ?? randomUUID()
     const externalCode = input.externalCode ?? generateExternalCode()
     const now = new Date()
     const createdAt = input.createdAt ?? now
     const updatedAt = input.updatedAt ?? now
+    const status = input.status ?? RESERVATION_STATUS.PROCESSING
 
-    return new ReservationEntity(id, externalCode, hotelId, roomId, checkIn, checkOut, guestName, guestEmail, paymentDetails, createdAt, updatedAt)
+    return new ReservationEntity(id, externalCode, hotelId, roomId, checkIn, checkOut, guestEmail, paymentDetails, status, createdAt, updatedAt)
   }
 }

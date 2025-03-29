@@ -19,4 +19,5 @@ export interface RoomRepositoryInterface {
   update: (input: RoomRepositoryData) => Promise<void>
   getByNumberAndHotelId: (number: number, hotelId: string) => Promise<RoomRepositoryData | null>
   getById: (id: string) => Promise<RoomRepositoryData | null>
+  updateStatus: (roomId: string, status: string) => Promise<void>
 }

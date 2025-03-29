@@ -18,7 +18,6 @@ describe('ReservationEntity', () => {
       roomId: '2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f49',
       checkIn: '2025-04-01',
       checkOut: '2025-04-05',
-      guestName: 'Filipe Silva',
       guestEmail: 'filipe@email.com',
       paymentDetails: {
         total: 15000,
@@ -33,7 +32,7 @@ describe('ReservationEntity', () => {
   })
 
   test('should throw if any required field is empty', () => {
-    const requiredFields: Array<keyof BuildReservationEntityInput> = ['hotelId', 'roomId', 'checkIn', 'checkOut', 'guestName', 'guestEmail', 'paymentDetails']
+    const requiredFields: Array<keyof BuildReservationEntityInput> = ['hotelId', 'roomId', 'checkIn', 'checkOut', 'guestEmail', 'paymentDetails']
 
     for (const field of requiredFields) {
       const fieldBackup = input[field]
@@ -109,12 +108,14 @@ describe('ReservationEntity', () => {
     expect(entity.roomId).toBe('2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f49')
     expect(entity.checkIn).toBe('2025-04-01')
     expect(entity.checkOut).toBe('2025-04-05')
-    expect(entity.guestName).toBe('Filipe Silva')
     expect(entity.guestEmail).toBe('filipe@email.com')
     expect(entity.paymentDetails).toEqual({
       total: 15000,
       paymentMethod: 'credit_card',
       cardToken: '2c1d4d45-91b8-4a2e-94b8-b3f52b9b3f4f6105aab-1133-41bd-bf17-1be81a9bb8659'
     })
+    expect(entity.createdAt).toBeDefined()
+    expect(entity.updatedAt).toBeDefined()
+    expect(entity.status).toBe('processing')
   })
 })

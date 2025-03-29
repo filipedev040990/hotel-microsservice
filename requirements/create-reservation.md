@@ -25,7 +25,7 @@
   "checkOut": "string,
   "guestName": string,
   "status": string,
-  "paymentStatus": v
+  "paymentStatus": string
 }
 
 
