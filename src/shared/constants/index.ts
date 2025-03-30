@@ -3,7 +3,8 @@ export const ALLOWED_PAYMENT_METHODS = ['credit_card', 'pix']
 export const RESERVATION_STATUS = {
   PROCESSING: 'processing',
   CONFIRMED: 'confirmed',
-  CANCELED: 'canceled'
+  CANCELED: 'canceled',
+  FINISHED: 'finished'
 }
 
 export const PAYMENT_STATUS = {

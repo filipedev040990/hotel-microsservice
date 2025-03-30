@@ -23,4 +23,5 @@ export interface ReservartionRepositoryInterface {
   save: (input: ReservationRepositoryData) => Promise<void>
   getRoomById: (roomId: string) => Promise<HotelWithRoomData | null>
   updateStatus: (reservationId: string, status: string) => Promise<void>
+  getById: (reservationId: string) => Promise<ReservationRepositoryData | null>
 }
