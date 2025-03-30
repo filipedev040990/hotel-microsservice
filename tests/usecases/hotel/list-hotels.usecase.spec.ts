@@ -1,4 +1,5 @@
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { ListHotelsUseCaseOutput } from '@/domain/usecases/hotel/list-hotels-usecase.interface'
 import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
@@ -6,10 +7,12 @@ import { mock } from 'jest-mock-extended'
 
 const params: any = {
   hotelRepository: mock<HotelRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 const hotelRepositoryOutput: ListHotelsUseCaseOutput [] = [{
+  id: 'anyId',
   name: 'Grand Plaza Hotel',
   address: {
     country: 'USA',

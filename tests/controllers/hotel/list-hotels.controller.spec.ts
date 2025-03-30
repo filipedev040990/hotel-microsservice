@@ -10,6 +10,7 @@ const params: any = {
 }
 
 const useCaseOutput: ListHotelsUseCaseOutput [] = [{
+  id: 'anyId',
   name: 'Grand Plaza Hotel',
   address: {
     country: 'USA',

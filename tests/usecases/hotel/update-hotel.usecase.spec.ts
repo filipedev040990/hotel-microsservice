@@ -1,5 +1,6 @@
 import { HotelEntity } from '@/domain/entities/hotel/hotel.entity'
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { UpdateHotelUseCaseInput } from '@/domain/usecases/hotel/update-hotel-usecase.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
@@ -40,7 +41,8 @@ const fakeHotelRepositoryData = {
 
 const params: any = {
   hotelRepository: mock<HotelRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 describe('UpdateHotelUseCase', () => {

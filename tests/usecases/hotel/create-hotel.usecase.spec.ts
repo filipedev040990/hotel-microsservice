@@ -1,5 +1,6 @@
 import { HotelEntity } from '@/domain/entities/hotel/hotel.entity'
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CreateHotelUseCaseInput } from '@/domain/usecases/hotel/create-hotel-usecase.interface'
 import { CreateHotelUseCase } from '@/usecases/hotel/create-hotel.usecase'
@@ -24,7 +25,8 @@ const fakeHotelEntity: HotelEntity = {
 
 const params: any = {
   hotelRepository: mock<HotelRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 describe('CreateHotelUseCase', () => {

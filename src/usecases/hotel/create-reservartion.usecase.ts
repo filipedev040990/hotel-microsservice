@@ -3,7 +3,7 @@ import { ReservartionRepositoryInterface, ReservationRepositoryData } from '@/do
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
-import { CreateReservationUseCaseInput, CreateReservationUseCaseInterface, CreateReservationUseCaseOutput } from '@/domain/usecases/hotel/create-reservation-usecase.interface'
+import { CreateReservationUseCaseInput, CreateReservationUseCaseInterface, CreateReservationUseCaseOutput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
 import { PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'

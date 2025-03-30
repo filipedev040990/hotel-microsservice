@@ -3,9 +3,9 @@ import { ReservartionRepositoryInterface } from '@/domain/repositories/reservati
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
-import { CreateReservationUseCaseInput } from '@/domain/usecases/hotel/create-reservation-usecase.interface'
+import { CreateReservationUseCaseInput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
-import { CreateReservationUseCase } from '@/usecases/hotel/create-reservation.usecase'
+import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 

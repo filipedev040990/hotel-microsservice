@@ -1,7 +1,7 @@
 import { CreateReservationController } from '@/controllers/hotel/create-reservation.controller'
 import { HttpRequest } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { CreateReservationUseCaseInterface } from '@/domain/usecases/hotel/create-reservation-usecase.interface'
+import { CreateReservationUseCaseInterface } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {
