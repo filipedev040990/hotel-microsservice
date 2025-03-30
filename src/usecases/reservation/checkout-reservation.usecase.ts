@@ -39,6 +39,14 @@ export class CheckoutReservationUseCase implements CheckoutReservationUseCaseInt
       throw new InvalidParamError('id')
     }
 
+    if (reservationExisting.status === RESERVATION_STATUS.FINISHED) {
+      throw new InvalidParamError('This reservation already finished')
+    }
+
+    if (reservationExisting.status !== RESERVATION_STATUS.CONFIRMED) {
+      throw new InvalidParamError('This reservation is not confirmed')
+    }
+
     return reservationExisting
   }
 }

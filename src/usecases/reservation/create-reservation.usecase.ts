@@ -82,7 +82,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
         }
 
         await this.roomRepository.updateStatus(data.roomId, roomStatus)
-        await this.reservationRepository.updateStatus(data.id, reservationStatus)
+        await this.reservationRepository.updateStatus(data.id, reservationStatus, PAYMENT_STATUS.CONFIRMED)
 
         this.loggerService.info(`Reservation ${reservation.id} updated to status: ${reservationStatus}`)
       } catch (error) {

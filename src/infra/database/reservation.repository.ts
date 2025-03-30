@@ -19,7 +19,18 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     }
   }
 
-  async updateStatus (reservationId: string, status: string): Promise<void> {
-    await prismaClient.reservation.update({ where: { id: reservationId }, data: { status: status, paymentStatus: status } })
+  async updateStatus (reservationId: string, status: string, paymentStatus?: string): Promise<void> {
+    const data: { status: string, paymentStatus?: string } = { status: status }
+
+    if (paymentStatus) {
+      data.paymentStatus = paymentStatus
+    }
+
+    await prismaClient.reservation.update({ where: { id: reservationId }, data })
+  }
+
+  async getById (reservationId: string): Promise<ReservationRepositoryData | null> {
+    const reservation = await prismaClient.reservation.findFirst({ where: { id: reservationId } })
+    return reservation ?? null
   }
 }

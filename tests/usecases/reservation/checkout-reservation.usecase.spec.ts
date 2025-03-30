@@ -56,6 +56,46 @@ describe('CheckoutReservationUseCase', () => {
     await expect(promise).rejects.toThrowError(new InvalidParamError('id'))
   })
 
+  test('should throw if the reservation status is not confirmed', async () => {
+    jest.spyOn(params.reservationRepository, 'getById').mockResolvedValueOnce({
+      id: 'anyReservationId',
+      externalCode: 'anyCode',
+      roomId: 'anyRoomId',
+      checkIn: '2025-01-01',
+      checkOut: '2025-01-15',
+      guestEmail: 'ze@email.com',
+      paymentTotal: 25000,
+      paymentMethod: 'credit_card',
+      paymentCardToken: 'sa489789e47r654sd4a4s65assa',
+      paymentStatus: 'confirmed',
+      status: 'processing',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    const promise = sut.execute(reservationId)
+    await expect(promise).rejects.toThrowError(new InvalidParamError('This reservation is not confirmed'))
+  })
+
+  test('should throw if the reservation status is finished', async () => {
+    jest.spyOn(params.reservationRepository, 'getById').mockResolvedValueOnce({
+      id: 'anyReservationId',
+      externalCode: 'anyCode',
+      roomId: 'anyRoomId',
+      checkIn: '2025-01-01',
+      checkOut: '2025-01-15',
+      guestEmail: 'ze@email.com',
+      paymentTotal: 25000,
+      paymentMethod: 'credit_card',
+      paymentCardToken: 'sa489789e47r654sd4a4s65assa',
+      paymentStatus: 'confirmed',
+      status: 'finished',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    const promise = sut.execute(reservationId)
+    await expect(promise).rejects.toThrowError(new InvalidParamError('This reservation already finished'))
+  })
+
   test('should call ReservationRepository.updateStatus once and with correct id', async () => {
     await sut.execute(reservationId)
 

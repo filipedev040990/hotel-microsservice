@@ -47,4 +47,9 @@ router.post(
   expressRouteAdapter(container.resolve('createReservationController'))
 )
 
+router.put(
+  '/room/reservation/checkout/:id',
+  expressRouteAdapter(container.resolve('checkoutReservationController'))
+)
+
 export { router }
