@@ -25,11 +25,14 @@ import { ReservartionRepositoryInterface } from '@/domain/repositories/reservati
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInterface } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
-import { CreateReservationController } from '@/controllers/hotel/create-reservation.controller'
+import { CreateReservationController } from '@/controllers/reservation/create-reservation.controller'
 import { ReservationRepository } from '../database/reservation.repository'
 import { PubSubService } from '@/shared/services/pub-sub.service'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { CacheService } from '@/shared/services/cache.service'
+import { CheckoutReservationUseCaseInterface } from '@/domain/usecases/reservation/checkout-reservation-usecase.interface'
+import { CheckoutReservationUseCase } from '@/usecases/reservation/checkout-reservation.usecase'
+import { CheckoutReservationController } from '@/controllers/reservation/checkout-reservation.controller'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -50,6 +53,8 @@ export type AppContainer = {
   reservationRepository: ReservartionRepositoryInterface
   pubSubService: PubSubServiceInterface
   cacheService: CacheServiceInterface
+  checkoutReservationUseCase: CheckoutReservationUseCaseInterface
+  checkoutReservationController: ControllerInterface
 }
 
 const container = createContainer()
@@ -62,6 +67,7 @@ container.register({
   updateRoomController: asClass(UpdateRoomController).singleton(),
   listHotelsController: asClass(ListHotelsController).singleton(),
   createReservationController: asClass(CreateReservationController).singleton(),
+  checkoutReservationController: asClass(CheckoutReservationController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -70,6 +76,7 @@ container.register({
   updateRoomUseCase: asClass(UpdateRoomUseCase).singleton(),
   listHotelsUseCase: asClass(ListHotelsUseCase).singleton(),
   createReservationUseCase: asClass(CreateReservationUseCase).singleton(),
+  checkoutReservationUseCase: asClass(CheckoutReservationUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),
