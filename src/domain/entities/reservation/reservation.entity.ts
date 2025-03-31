@@ -12,6 +12,7 @@ export class ReservationEntity {
     public readonly checkIn: string,
     public readonly checkOut: string,
     public readonly guestEmail: string,
+    public readonly guestId: string,
     public readonly paymentDetails: PaymentDetails,
     public readonly status: string,
     public readonly createdAt: Date,
@@ -28,7 +29,7 @@ export class ReservationEntity {
   }
 
   private static validateFields (input: BuildReservationEntityInput): void {
-    const requiredFields: Array<keyof BuildReservationEntityInput> = ['roomId', 'checkIn', 'checkOut', 'guestEmail', 'paymentDetails']
+    const requiredFields: Array<keyof BuildReservationEntityInput> = ['roomId', 'checkIn', 'checkOut', 'guestEmail', 'guestId', 'paymentDetails']
 
     for (const field of requiredFields) {
       if (!input[field]) {
@@ -74,7 +75,7 @@ export class ReservationEntity {
   }
 
   private static create (input: BuildReservationEntityInput): ReservationEntity {
-    const { roomId, checkIn, checkOut, guestEmail, paymentDetails } = input
+    const { roomId, checkIn, checkOut, guestEmail, guestId, paymentDetails } = input
     const id = input.id ?? randomUUID()
     const externalCode = input.externalCode ?? generateExternalCode()
     const now = new Date()
@@ -82,6 +83,6 @@ export class ReservationEntity {
     const updatedAt = input.updatedAt ?? now
     const status = input.status ?? RESERVATION_STATUS.PROCESSING
 
-    return new ReservationEntity(id, externalCode, roomId, checkIn, checkOut, guestEmail, paymentDetails, status, createdAt, updatedAt)
+    return new ReservationEntity(id, externalCode, roomId, checkIn, checkOut, guestEmail, guestId, paymentDetails, status, createdAt, updatedAt)
   }
 }

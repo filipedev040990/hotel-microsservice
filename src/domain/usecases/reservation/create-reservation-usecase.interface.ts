@@ -5,6 +5,7 @@ export type CreateReservationUseCaseInput = {
   checkIn: string
   checkOut: string
   guestEmail: string
+  guestId: string
   paymentDetails: PaymentDetails
 }
 

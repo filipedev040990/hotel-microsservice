@@ -18,6 +18,7 @@ describe('ReservationEntity', () => {
       checkIn: '2025-04-01',
       checkOut: '2025-04-05',
       guestEmail: 'filipe@email.com',
+      guestId: 'anyGuestId',
       paymentDetails: {
         total: 15000,
         paymentMethod: 'credit_card',
@@ -107,6 +108,7 @@ describe('ReservationEntity', () => {
     expect(entity.checkIn).toBe('2025-04-01')
     expect(entity.checkOut).toBe('2025-04-05')
     expect(entity.guestEmail).toBe('filipe@email.com')
+    expect(entity.guestId).toBe('anyGuestId')
     expect(entity.paymentDetails).toEqual({
       total: 15000,
       paymentMethod: 'credit_card',

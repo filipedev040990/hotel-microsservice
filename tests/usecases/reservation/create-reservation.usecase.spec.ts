@@ -30,6 +30,7 @@ const fakeReservationEntity: ReservationEntity = {
   checkIn: '2050-12-31',
   checkOut: '2051-01-07',
   guestEmail: 'ze@email.com',
+  guestId: 'anyGuestId',
   paymentDetails: {
     paymentMethod: 'credit_card',
     cardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
@@ -55,6 +56,7 @@ describe('CreateReservationUseCase', () => {
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
       guestEmail: 'ze@email.com',
+      guestId: 'anyGuestId',
       paymentDetails: {
         paymentMethod: 'credit_card',
         cardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
@@ -80,6 +82,7 @@ describe('CreateReservationUseCase', () => {
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
       guestEmail: 'ze@email.com',
+      guestId: 'anyGuestId',
       paymentDetails: {
         paymentMethod: 'credit_card',
         cardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
@@ -165,6 +168,7 @@ describe('CreateReservationUseCase', () => {
       checkIn: '2050-12-31',
       checkOut: '2051-01-07',
       guestEmail: 'ze@email.com',
+      guestId: 'anyGuestId',
       paymentCardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
       paymentMethod: 'credit_card',
       paymentStatus: 'processing',

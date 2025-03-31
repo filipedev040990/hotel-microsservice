@@ -5,6 +5,7 @@ export type ReservationRepositoryData = {
   checkIn: string
   checkOut: string
   guestEmail: string
+  guestId: string
   paymentTotal: number
   paymentMethod: string
   paymentCardToken: string

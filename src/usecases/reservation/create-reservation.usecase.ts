@@ -134,6 +134,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
       checkIn: reservation.checkIn,
       checkOut: reservation.checkOut,
       guestEmail: reservation.guestEmail,
+      guestId: reservation.guestId,
       paymentCardToken: reservation.paymentDetails.cardToken,
       paymentMethod: reservation.paymentDetails.paymentMethod,
       paymentStatus: PAYMENT_STATUS.PROCESSING,

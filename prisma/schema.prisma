@@ -71,6 +71,7 @@ model Reservation {
   checkIn          String
   checkOut         String
   guestEmail       String
+  guestId          String
   paymentTotal     Int
   paymentMethod    String
   paymentCardToken String
