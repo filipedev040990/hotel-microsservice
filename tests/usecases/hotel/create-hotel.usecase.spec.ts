@@ -103,4 +103,11 @@ describe('CreateHotelUseCase', () => {
 
     expect(output).toEqual({ id: 'anyHotelId' })
   })
+
+  test('should call CacheService.del', async () => {
+    await sut.execute(input)
+
+    expect(params.cacheService.del).toHaveBeenCalledTimes(1)
+    expect(params.cacheService.del).toHaveBeenCalledWith('hotels_list')
+  })
 })

@@ -1,11 +1,12 @@
 import { ReservationEntity } from '@/domain/entities/reservation/reservation.entity'
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
-import { CreateReservationUseCase } from '@/usecases/hotel/create-reservartion.usecase'
+import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
@@ -13,7 +14,8 @@ const params: any = {
   reservationRepository: mock<ReservartionRepositoryInterface>(),
   roomRepository: mock<RoomRepositoryInterface>(),
   pubSubService: mock<PubSubServiceInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 const fakeHotelWithRoom = {
@@ -61,8 +63,6 @@ describe('CreateReservationUseCase', () => {
     }
     jest.spyOn(params.reservationRepository, 'getRoomById').mockResolvedValue(fakeHotelWithRoom)
     jest.spyOn(ReservationEntity, 'build').mockReturnValue(fakeReservationEntity)
-    jest.spyOn(params.pubSubService, 'subscribe').mockResolvedValue(true)
-    jest.spyOn(params.pubSubService, 'publish').mockResolvedValue(true)
   })
 
   afterAll(() => {
@@ -152,5 +152,33 @@ describe('CreateReservationUseCase', () => {
       paymentStatus: 'processing',
       createdAt: new Date('2025-03-01')
     })
+  })
+
+  test('should call ReservationRepository.save once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(params.reservationRepository.save).toHaveBeenCalledTimes(1)
+    expect(params.reservationRepository.save).toHaveBeenCalledWith({
+      id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
+      externalCode: 'EXT123456',
+      roomId: 'anyRoomId',
+      checkIn: '2050-12-31',
+      checkOut: '2051-01-07',
+      guestEmail: 'ze@email.com',
+      paymentCardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
+      paymentMethod: 'credit_card',
+      paymentStatus: 'processing',
+      paymentTotal: 250000,
+      status: 'in_process_booking',
+      createdAt: new Date('2025-03-01'),
+      updatedAt: new Date('2025-03-01')
+    })
+  })
+
+  test('should call CacheService.del', async () => {
+    await sut.execute(input)
+
+    expect(params.cacheService.del).toHaveBeenCalledTimes(1)
+    expect(params.cacheService.del).toHaveBeenCalledWith('hotels_list')
   })
 })

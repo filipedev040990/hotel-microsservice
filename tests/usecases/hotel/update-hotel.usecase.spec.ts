@@ -151,4 +151,11 @@ describe('UpdateHotelUseCase', () => {
       updatedAt: new Date('2025-03-01')
     })
   })
+
+  test('should call CacheService.del', async () => {
+    await sut.execute(input)
+
+    expect(params.cacheService.del).toHaveBeenCalledTimes(1)
+    expect(params.cacheService.del).toHaveBeenCalledWith('hotels_list')
+  })
 })

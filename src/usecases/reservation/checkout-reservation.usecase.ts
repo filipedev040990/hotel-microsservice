@@ -1,20 +1,23 @@
 import { ReservartionRepositoryInterface, ReservationRepositoryData } from '@/domain/repositories/reservation-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CheckoutReservationUseCaseInterface } from '@/domain/usecases/reservation/checkout-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class CheckoutReservationUseCase implements CheckoutReservationUseCaseInterface {
   private readonly reservationRepository: ReservartionRepositoryInterface
   private readonly roomRepository: RoomRepositoryInterface
   private readonly loggerService: LoggerServiceInterface
+  private readonly cacheService: CacheServiceInterface
 
   constructor (params: AppContainer) {
     this.reservationRepository = params.reservationRepository
     this.roomRepository = params.roomRepository
     this.loggerService = params.loggerService
+    this.cacheService = params.cacheService
   }
 
   async execute (reservationId: string): Promise<void> {
@@ -23,6 +26,7 @@ export class CheckoutReservationUseCase implements CheckoutReservationUseCaseInt
 
       await this.reservationRepository.updateStatus(id, RESERVATION_STATUS.FINISHED)
       await this.roomRepository.updateStatus(roomId, ROOM_STATUS.AVAILABLE)
+      await this.cacheService.del(HOTELS_CACHE_KEY)
     } catch (error) {
       this.loggerService.error('CheckoutReservationUseCase error', { error })
       throw error

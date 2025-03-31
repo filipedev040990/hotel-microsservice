@@ -33,6 +33,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
       await this.saveReservation(reservation)
       await this.subscribeChannel(reservation)
       await this.publishMessage(reservation)
+      await this.cacheService.del(HOTELS_CACHE_KEY)
 
       return {
         id: reservation.id,

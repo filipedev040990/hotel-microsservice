@@ -1,5 +1,6 @@
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { CheckoutReservationUseCase } from '@/usecases/reservation/checkout-reservation.usecase'
@@ -8,7 +9,8 @@ import { mock } from 'jest-mock-extended'
 const params: any = {
   reservationRepository: mock<ReservartionRepositoryInterface>(),
   roomRepository: mock<RoomRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 const reservationData = {
@@ -108,5 +110,12 @@ describe('CheckoutReservationUseCase', () => {
 
     expect(params.roomRepository.updateStatus).toHaveBeenCalledTimes(1)
     expect(params.roomRepository.updateStatus).toHaveBeenCalledWith('anyRoomId', 'available')
+  })
+
+  test('should call CacheService.del', async () => {
+    await sut.execute(reservationId)
+
+    expect(params.cacheService.del).toHaveBeenCalledTimes(1)
+    expect(params.cacheService.del).toHaveBeenCalledWith('hotels_list')
   })
 })
