@@ -1,11 +1,12 @@
 import { ReservationEntity } from '@/domain/entities/reservation/reservation.entity'
 import { ReservartionRepositoryInterface, ReservationRepositoryData } from '@/domain/repositories/reservation-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInput, CreateReservationUseCaseInterface, CreateReservationUseCaseOutput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'
 
 export class CreateReservationUseCase implements CreateReservationUseCaseInterface {
@@ -13,12 +14,14 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
   private readonly roomRepository: RoomRepositoryInterface
   private readonly pubSubService: PubSubServiceInterface
   private readonly loggerService: LoggerServiceInterface
+  private readonly cacheService: CacheServiceInterface
 
   constructor (params: AppContainer) {
     this.reservationRepository = params.reservationRepository
     this.roomRepository = params.roomRepository
     this.pubSubService = params.pubSubService
     this.loggerService = params.loggerService
+    this.cacheService = params.cacheService
   }
 
   async execute (input: CreateReservationUseCaseInput): Promise<CreateReservationUseCaseOutput> {
@@ -73,16 +76,23 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
           return
         }
 
-        let roomStatus = ROOM_STATUS.RESERVED
-        let reservationStatus = RESERVATION_STATUS.CONFIRMED
+        let roomStatus
+        let reservationStatus
+        let paymentStatus
 
-        if (data?.status !== PAYMENT_STATUS.CONFIRMED) {
+        if (data.status === PAYMENT_STATUS.CONFIRMED) {
+          roomStatus = ROOM_STATUS.RESERVED
+          reservationStatus = RESERVATION_STATUS.CONFIRMED
+          paymentStatus = PAYMENT_STATUS.CONFIRMED
+        } else {
           roomStatus = ROOM_STATUS.AVAILABLE
           reservationStatus = RESERVATION_STATUS.CANCELED
+          paymentStatus = PAYMENT_STATUS.CANCELED
         }
 
         await this.roomRepository.updateStatus(data.roomId, roomStatus)
-        await this.reservationRepository.updateStatus(data.id, reservationStatus, PAYMENT_STATUS.CONFIRMED)
+        await this.reservationRepository.updateStatus(data.id, reservationStatus, paymentStatus)
+        await this.cacheService.del(HOTELS_CACHE_KEY)
 
         this.loggerService.info(`Reservation ${reservation.id} updated to status: ${reservationStatus}`)
       } catch (error) {
