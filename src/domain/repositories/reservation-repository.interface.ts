@@ -1,3 +1,5 @@
+import { ListReservationsByGuestIdOutput } from '../usecases/reservation/list-reservations-by-guest-id-usecase.interface'
+
 export type ReservationRepositoryData = {
   id: string
   externalCode: string
@@ -25,4 +27,5 @@ export interface ReservartionRepositoryInterface {
   getRoomById: (roomId: string) => Promise<HotelWithRoomData | null>
   updateStatus: (reservationId: string, status: string, paymentStatus?: string) => Promise<void>
   getById: (reservationId: string) => Promise<ReservationRepositoryData | null>
+  getByGuestId: (guestId: string) => Promise<ListReservationsByGuestIdOutput [] | null>
 }

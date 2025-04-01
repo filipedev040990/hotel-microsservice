@@ -46,20 +46,21 @@ model Request {
 }
 
 model Room {
-  id           String   @id
-  externalCode String   @unique
+  id           String        @id
+  externalCode String        @unique
   number       Int
   type         String
   capacity     Int
-  description  String   @db.Text
+  description  String        @db.Text
   price        Int
   status       String
-  amenities    String   @db.Text
+  amenities    String        @db.Text
   floor        Int
   hotelId      String
-  hotel        Hotel    @relation(fields: [hotelId], references: [id])
+  hotel        Hotel         @relation(fields: [hotelId], references: [id])
   createdAt    DateTime
   updatedAt    DateTime
+  Reservation  Reservation[]
 
   @@map("rooms")
 }
@@ -77,6 +78,7 @@ model Reservation {
   paymentCardToken String
   paymentStatus    String
   status           String
+  room             Room     @relation(fields: [roomId], references: [id])
   createdAt        DateTime
   updatedAt        DateTime
 
