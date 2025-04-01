@@ -33,6 +33,9 @@ import { CacheService } from '@/shared/services/cache.service'
 import { CheckoutReservationUseCaseInterface } from '@/domain/usecases/reservation/checkout-reservation-usecase.interface'
 import { CheckoutReservationUseCase } from '@/usecases/reservation/checkout-reservation.usecase'
 import { CheckoutReservationController } from '@/controllers/reservation/checkout-reservation.controller'
+import { ListReservationsByGuestIdUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
+import { ListReservationsByGuestIdUseCase } from '@/usecases/reservation/list-reservations-by-guest-id.usecase'
+import { ListReservationsByGuestIdController } from '@/controllers/reservation/list-reservations-by-guest-id.controller'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -55,6 +58,8 @@ export type AppContainer = {
   cacheService: CacheServiceInterface
   checkoutReservationUseCase: CheckoutReservationUseCaseInterface
   checkoutReservationController: ControllerInterface
+  listReservationsByGuestIdUseCase: ListReservationsByGuestIdUseCaseInterface
+  listReservationsByGuestIController: ControllerInterface
 }
 
 const container = createContainer()
@@ -68,6 +73,7 @@ container.register({
   listHotelsController: asClass(ListHotelsController).singleton(),
   createReservationController: asClass(CreateReservationController).singleton(),
   checkoutReservationController: asClass(CheckoutReservationController).singleton(),
+  listReservationsByGuestIController: asClass(ListReservationsByGuestIdController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -77,6 +83,7 @@ container.register({
   listHotelsUseCase: asClass(ListHotelsUseCase).singleton(),
   createReservationUseCase: asClass(CreateReservationUseCase).singleton(),
   checkoutReservationUseCase: asClass(CheckoutReservationUseCase).singleton(),
+  listReservationsByGuestIdUseCase: asClass(ListReservationsByGuestIdUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),

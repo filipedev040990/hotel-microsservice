@@ -40,6 +40,7 @@ router.patch(
   expressRouteAdapter(container.resolve('updateRoomController'))
 )
 
+// Reservations
 router.post(
   '/room/reservation',
   validateTokenMiddleware,
@@ -50,6 +51,12 @@ router.post(
 router.put(
   '/room/reservation/checkout/:id',
   expressRouteAdapter(container.resolve('checkoutReservationController'))
+)
+
+router.get(
+  '/room/reservation/me',
+  validateTokenMiddleware,
+  expressRouteAdapter(container.resolve('listReservationsByGuestIController'))
 )
 
 export { router }
