@@ -6,7 +6,6 @@ import * as path from 'path'
 
 type LogData = {
   level: LogLevel
-  message: string
   requestId?: string
   [key: string]: any
 }
@@ -49,33 +48,34 @@ export class LoggerService implements LoggerServiceInterface {
     )
   }
 
-  private logWithTracking (level: LogLevel, message: string, obj?: object): void {
-    const requestId = getNamespace('requestContext')?.get('requestId')
-    const additionalInfo = { requestId, ...obj }
+private logWithTracking (level: LogLevel, message: string, obj?: object): void {
+  const requestId = getNamespace('requestContext')?.get('requestId')
+  const additionalInfo = { requestId, ...obj }
 
-    const logObject: LogData = { level, message, ...additionalInfo }
+  const logObject: LogData = { level, ...additionalInfo }
 
-    switch (level) {
-      case LogLevel.INFO:
-        this.logger.info(logObject, message)
-        break
-      case LogLevel.ERROR:
-        this.logger.error(logObject, message)
-        break
-      case LogLevel.WARN:
-        this.logger.warn(logObject, message)
-        break
-      case LogLevel.DEBUG:
-        this.logger.debug(logObject, message)
-        break
-      case LogLevel.TRACE:
-        this.logger.trace(logObject, message)
-        break
-      default:
-        this.logger.info(logObject, message)
-        break
-    }
+  switch (level) {
+    case LogLevel.INFO:
+      this.logger.info(logObject, message)
+      break
+    case LogLevel.ERROR:
+      this.logger.error(logObject, message)
+      break
+    case LogLevel.WARN:
+      this.logger.warn(logObject, message)
+      break
+    case LogLevel.DEBUG:
+      this.logger.debug(logObject, message)
+      break
+    case LogLevel.TRACE:
+      this.logger.trace(logObject, message)
+      break
+    default:
+      this.logger.info(logObject, message)
+      break
   }
+}
+
 
   info (message: string, obj?: object): void {
     this.logWithTracking(LogLevel.INFO, message, obj)

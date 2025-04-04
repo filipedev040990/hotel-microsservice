@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8000/v1/hotel'
 const BASE_URL_ROOM = 'http://localhost:8000/v1/room'
 const HEADERS = { 'X-Hotel-Admin': 'HiKi4tiyBRpwrg0Ohp2naBHCSsSCEXE1' }
 
-async function createHotel () {
+async function createHotel() {
   const hotelData = {
     name: `Hotel ${faker.location.city()}`,
     address: {
@@ -27,7 +27,7 @@ async function createHotel () {
   }
 }
 
-async function createRoom (hotelId, usedRoomNumbers) {
+async function createRoom(hotelId, usedRoomNumbers) {
   let roomNumber
 
   // Garantir que o número do quarto seja único para o hotel
@@ -57,14 +57,14 @@ async function createRoom (hotelId, usedRoomNumbers) {
   }
 }
 
-async function populateDatabase () {
-  for (let i = 0; i < 500; i++) {
+async function populateDatabase() {
+  for (let i = 0; i < 50; i++) {
     const hotelId = await createHotel()
     if (hotelId) {
       const usedRoomNumbers = new Set() // Conjunto para armazenar números de quartos já criados para este hotel
 
       // Criar 10 quartos para cada hotel, garantindo números únicos
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 2; j++) {
         await createRoom(hotelId, usedRoomNumbers)
       }
     }
