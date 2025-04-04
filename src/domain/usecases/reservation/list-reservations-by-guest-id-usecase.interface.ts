@@ -16,6 +16,7 @@ export type ListReservationsByGuestIdOutput = {
     floor: number
   }
   reservation: {
+    id: string
     checkIn: string
     checkOut: string
     status: string
