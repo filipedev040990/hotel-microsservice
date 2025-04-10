@@ -10,7 +10,8 @@ export const RESERVATION_STATUS = {
 export const PAYMENT_STATUS = {
   PROCESSING: 'processing',
   CONFIRMED: 'confirmed',
-  CANCELED: 'canceled'
+  CANCELED: 'canceled',
+  REFUNDED: 'refunded'
 }
 
 export const RESERVATION_REQUEST_CHANNEL = 'reservation_request'
