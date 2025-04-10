@@ -18,17 +18,17 @@ export class ListHotelsUseCase implements ListHotelsUseCaseInterface {
 
   async execute (hotelId?: string): Promise<ListHotelsUseCaseOutput[]> {
     try {
+      if (hotelId) {
+        return await this.hotelRepository.find(hotelId)
+      }
+
       const cachedHotels = await this.cacheService.get<ListHotelsUseCaseOutput[]>(HOTELS_CACHE_KEY)
 
-      if (cachedHotels) {
-        if (hotelId) {
-          return cachedHotels.filter((hotel: any) => hotel.id === hotelId)
-        }
-
+      if (cachedHotels?.length) {
         return cachedHotels
       }
 
-      const hotels = await this.hotelRepository.find(hotelId)
+      const hotels = await this.hotelRepository.find()
 
       await this.cacheService.set(HOTELS_CACHE_KEY, hotels, 3600)
 

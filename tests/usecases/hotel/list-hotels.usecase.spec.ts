@@ -73,7 +73,7 @@ describe('ListHotelsUseCase', () => {
     await sut.execute(hotelId)
 
     expect(params.hotelRepository.find).toHaveBeenCalledTimes(1)
-    expect(params.hotelRepository.find).toHaveBeenCalledWith(undefined)
+    expect(params.hotelRepository.find).toHaveBeenCalledWith()
   })
 
   test('should return a correct output', async () => {

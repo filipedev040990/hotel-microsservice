@@ -34,6 +34,7 @@ const useCaseOutput: ListReservationsByGuestIdOutput [] = [
       floor: 10
     },
     reservation: {
+      id: 'anyReservationId',
       checkIn: '2025-06-15',
       checkOut: '2025-06-20',
       status: 'confirmed'
