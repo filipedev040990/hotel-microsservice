@@ -41,7 +41,7 @@ export class CancelReservationUseCase implements CancelReservationUseCaseInterfa
       throw new InvalidParamError('reservationId')
     }
 
-    if (reservation.guestId !== guestId) {
+    if (reservation.guestId !== guestId || reservation.status !== RESERVATION_STATUS.CONFIRMED) {
       throw new InvalidParamError('This reservation cannot be cancelled')
     }
   }

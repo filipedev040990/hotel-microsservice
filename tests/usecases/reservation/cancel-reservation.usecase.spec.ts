@@ -22,7 +22,7 @@ const reservationRepositoryData = {
   paymentMethod: 'any',
   paymentCardToken: 'any',
   paymentStatus: 'any',
-  status: 'reserved',
+  status: 'confirmed',
   createdAt: new Date(),
   updatedAt: new Date()
 }
@@ -72,6 +72,27 @@ describe('CancelReservationUseCase', () => {
       paymentCardToken: 'any',
       paymentStatus: 'any',
       status: 'reserved',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    const promise = sut.execute(input)
+    await expect(promise).rejects.toThrowError(new InvalidParamError('This reservation cannot be cancelled'))
+  })
+
+  test('should throw if reservation status is not confirmed', async () => {
+    jest.spyOn(params.reservationRepository, 'getById').mockResolvedValueOnce({
+      id: 'anyReservationId',
+      externalCode: 'externalCode',
+      roomId: 'roomId',
+      checkIn: '2025-12-20',
+      checkOut: '2026-01-01',
+      guestEmail: 'anyEmail@email.com',
+      guestId: 'anyGuestId',
+      paymentTotal: 123456,
+      paymentMethod: 'any',
+      paymentCardToken: 'any',
+      paymentStatus: 'any',
+      status: 'processing',
       createdAt: new Date(),
       updatedAt: new Date()
     })

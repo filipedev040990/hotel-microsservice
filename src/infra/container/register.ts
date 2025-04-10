@@ -36,6 +36,9 @@ import { CheckoutReservationController } from '@/controllers/reservation/checkou
 import { ListReservationsByGuestIdUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
 import { ListReservationsByGuestIdUseCase } from '@/usecases/reservation/list-reservations-by-guest-id.usecase'
 import { ListReservationsByGuestIdController } from '@/controllers/reservation/list-reservations-by-guest-id.controller'
+import { CancelReservationUseCaseInterface } from '@/domain/usecases/reservation/cancel-reservation-usecase.interface'
+import { CancelReservationUseCase } from '@/usecases/reservation/cancel-reservation.usecase'
+import { CancelReservationController } from '@/controllers/reservation/cancel-reservation.controller'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -60,6 +63,8 @@ export type AppContainer = {
   checkoutReservationController: ControllerInterface
   listReservationsByGuestIdUseCase: ListReservationsByGuestIdUseCaseInterface
   listReservationsByGuestIController: ControllerInterface
+  cancelReservationUseCase: CancelReservationUseCaseInterface
+  cancelReservationController: ControllerInterface
 }
 
 const container = createContainer()
@@ -74,6 +79,7 @@ container.register({
   createReservationController: asClass(CreateReservationController).singleton(),
   checkoutReservationController: asClass(CheckoutReservationController).singleton(),
   listReservationsByGuestIController: asClass(ListReservationsByGuestIdController).singleton(),
+  cancelReservationController: asClass(CancelReservationController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -84,6 +90,7 @@ container.register({
   createReservationUseCase: asClass(CreateReservationUseCase).singleton(),
   checkoutReservationUseCase: asClass(CheckoutReservationUseCase).singleton(),
   listReservationsByGuestIdUseCase: asClass(ListReservationsByGuestIdUseCase).singleton(),
+  cancelReservationUseCase: asClass(CancelReservationUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),

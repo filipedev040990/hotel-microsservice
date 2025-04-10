@@ -59,4 +59,10 @@ router.get(
   expressRouteAdapter(container.resolve('listReservationsByGuestIController'))
 )
 
+router.put(
+  '/room/reservation/cancel/:id',
+  validateTokenMiddleware,
+  expressRouteAdapter(container.resolve('cancelReservationController'))
+)
+
 export { router }
