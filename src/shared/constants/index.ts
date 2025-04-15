@@ -23,3 +23,5 @@ export const ROOM_STATUS = {
 }
 
 export const HOTELS_CACHE_KEY = 'hotels_list'
+
+export const REFUSED_PAYMENT = 'Refused payment'

@@ -16,7 +16,8 @@ export class ReservationEntity {
     public readonly paymentDetails: PaymentDetails,
     public readonly status: string,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
+    public readonly reason?: string
   ) {}
 
   public static build (input: BuildReservationEntityInput): ReservationEntity {

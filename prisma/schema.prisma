@@ -78,6 +78,7 @@ model Reservation {
   paymentCardToken String
   paymentStatus    String
   status           String
+  reason           String?
   room             Room     @relation(fields: [roomId], references: [id])
   createdAt        DateTime
   updatedAt        DateTime

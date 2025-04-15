@@ -6,7 +6,7 @@ import { LoggerServiceInterface } from '@/domain/services/logger-service.interfa
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInput, CreateReservationUseCaseInterface, CreateReservationUseCaseOutput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { HOTELS_CACHE_KEY, PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, REFUSED_PAYMENT, PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'
 
 export class CreateReservationUseCase implements CreateReservationUseCaseInterface {
@@ -91,8 +91,10 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
           paymentStatus = PAYMENT_STATUS.CANCELED
         }
 
+        const reason = data.status !== PAYMENT_STATUS.CONFIRMED ? REFUSED_PAYMENT : undefined
+
         await this.roomRepository.updateStatus(data.roomId, roomStatus)
-        await this.reservationRepository.updateStatus(data.id, reservationStatus, paymentStatus)
+        await this.reservationRepository.updateStatus(data.id, reservationStatus, paymentStatus, reason)
         await this.cacheService.del(HOTELS_CACHE_KEY)
 
         this.loggerService.info(`Reservation ${reservation.id} updated to status: ${reservationStatus}`)

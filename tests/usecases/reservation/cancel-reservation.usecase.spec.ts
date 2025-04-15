@@ -1,4 +1,6 @@
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
+import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CancelReservationUseCaseInput } from '@/domain/usecases/reservation/cancel-reservation-usecase.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
@@ -7,7 +9,9 @@ import { mock } from 'jest-mock-extended'
 
 const params: any = {
   reservationRepository: mock<ReservartionRepositoryInterface>(),
-  loggerService: mock<LoggerServiceInterface>()
+  loggerService: mock<LoggerServiceInterface>(),
+  cacheService: mock<CacheServiceInterface>(),
+  roomRepository: mock<RoomRepositoryInterface>()
 }
 
 const reservationRepositoryData = {

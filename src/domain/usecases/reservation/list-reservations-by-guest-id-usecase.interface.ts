@@ -20,6 +20,7 @@ export type ListReservationsByGuestIdOutput = {
     checkIn: string
     checkOut: string
     status: string
+    reason: string | null
   }
 }
 

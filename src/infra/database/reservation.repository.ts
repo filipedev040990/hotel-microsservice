@@ -20,11 +20,15 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     }
   }
 
-  async updateStatus (reservationId: string, status: string, paymentStatus?: string): Promise<void> {
-    const data: { status: string, paymentStatus?: string } = { status: status }
+  async updateStatus (reservationId: string, status: string, paymentStatus?: string, reason?: string): Promise<void> {
+    const data: { status: string, paymentStatus?: string, reason?: string } = { status: status }
 
     if (paymentStatus) {
       data.paymentStatus = paymentStatus
+    }
+
+    if (reason) {
+      data.reason = reason
     }
 
     await prismaClient.reservation.update({ where: { id: reservationId }, data })
@@ -32,7 +36,28 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
 
   async getById (reservationId: string): Promise<ReservationRepositoryData | null> {
     const reservation = await prismaClient.reservation.findFirst({ where: { id: reservationId } })
-    return reservation ?? null
+
+    if (!reservation) {
+      return null
+    }
+
+    return {
+      id: reservation.id,
+      checkIn: reservation.checkIn,
+      checkOut: reservation.checkOut,
+      externalCode: reservation.externalCode,
+      guestEmail: reservation.guestEmail,
+      guestId: reservation.guestId,
+      paymentCardToken: reservation.paymentCardToken,
+      paymentMethod: reservation.paymentCardToken,
+      status: reservation.status,
+      reason: reservation.reason ?? undefined,
+      roomId: reservation.roomId,
+      paymentStatus: reservation.paymentStatus,
+      paymentTotal: reservation.paymentTotal,
+      createdAt: reservation.createdAt,
+      updatedAt: reservation.updatedAt
+    }
   }
 
   async getByGuestId (guestId: string): Promise<ListReservationsByGuestIdOutput[] | null> {
@@ -45,6 +70,7 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
         checkIn: true,
         checkOut: true,
         status: true,
+        reason: true,
         room: {
           select: {
             id: true,
@@ -103,7 +129,8 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
           id: reservation.id,
           checkIn: reservation.checkIn,
           checkOut: reservation.checkOut,
-          status: reservation.status
+          status: reservation.status,
+          reason: reservation.reason
         }
       }
     })
