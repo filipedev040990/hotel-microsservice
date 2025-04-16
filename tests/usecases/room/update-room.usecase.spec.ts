@@ -1,6 +1,7 @@
 import { RoomEntity } from '@/domain/entities/room/room.entity'
 import { HotelRepositoryInterface } from '@/domain/repositories/hotel-repository.interface'
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
+import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { UpdateRoomUseCaseInput } from '@/domain/usecases/room/update-room-usecase.interface'
 import { ConflictResourceError, InvalidParamError, MissingParamError } from '@/shared/errors'
@@ -43,7 +44,8 @@ const fakeHotelRepositoryData = {
 const params: any = {
   roomRepository: mock<RoomRepositoryInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
-  hotelRepository: mock<HotelRepositoryInterface>()
+  hotelRepository: mock<HotelRepositoryInterface>(),
+  cacheService: mock<CacheServiceInterface>()
 }
 
 describe('UpdateRoomUseCase', () => {
