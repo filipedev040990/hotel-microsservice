@@ -1,6 +1,6 @@
 import { HotelWithRoomData, ReservartionRepositoryInterface, ReservationRepositoryData } from '@/domain/repositories/reservation-repository.interface'
 import { prismaClient } from './prisma-client'
-import { ListReservationsByGuestIdOutput } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
+import { ListReservationsOutput } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
 
 export class ReservationRepository implements ReservartionRepositoryInterface {
   async save (data: ReservationRepositoryData): Promise<void> {
@@ -60,11 +60,8 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     }
   }
 
-  async getByGuestId (guestId: string): Promise<ListReservationsByGuestIdOutput[] | null> {
-    const reservations = await prismaClient.reservation.findMany({
-      where: {
-        guestId
-      },
+  async get (guestId?: string): Promise<ListReservationsOutput[] | null> {
+    const options: any = {
       select: {
         id: true,
         checkIn: true,
@@ -95,13 +92,21 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
           }
         }
       }
-    }) as any
+    }
+
+    if (guestId) {
+      options.where = {
+        guestId
+      }
+    }
+
+    const reservations = await prismaClient.reservation.findMany(options)
 
     if (!reservations) {
       return null
     }
 
-    const output: ListReservationsByGuestIdOutput[] = reservations.map((reservation: any) => {
+    const output: ListReservationsOutput[] = reservations.map((reservation: any) => {
       return {
         hotel: {
           name: reservation.room.hotel.name,

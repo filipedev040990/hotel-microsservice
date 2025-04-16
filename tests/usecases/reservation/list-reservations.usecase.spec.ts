@@ -1,8 +1,7 @@
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { ListReservationsOutput } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
-import { MissingParamError } from '@/shared/errors'
-import { ListReservationsByGuestIdUseCase } from '@/usecases/reservation/list-reservations-by-guest-id.usecase'
+import { ListReservationsUseCase } from '@/usecases/reservation/list-reservations.usecase'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {
@@ -44,31 +43,21 @@ const repositoryResponse: ListReservationsOutput [] = [
   }
 ]
 
-describe('ListReservationsByGuestIdUseCase', () => {
-  let sut: ListReservationsByGuestIdUseCase
-  let guestId: string
+describe('ListReservationsUseCase', () => {
+  let sut: ListReservationsUseCase
 
   beforeEach(() => {
-    sut = new ListReservationsByGuestIdUseCase(params)
-    guestId = 'anyGuestId'
+    sut = new ListReservationsUseCase(params)
     jest.spyOn(params.reservationRepository, 'get').mockResolvedValue(repositoryResponse)
   })
 
-  test('should throw if id is  not provided', async () => {
-    const promise = sut.execute(undefined as any)
-
-    await expect(promise).rejects.toThrowError(new MissingParamError('guestId'))
-  })
-
-  test('should call ReservationRepository.get once and with correct values', async () => {
-    await sut.execute(guestId)
-
+  test('should call reservationRepository.get', async () => {
+    await sut.execute()
     expect(params.reservationRepository.get).toHaveBeenCalledTimes(1)
-    expect(params.reservationRepository.get).toHaveBeenCalledWith('anyGuestId')
   })
 
   test('should return a correct output', async () => {
-    const output = await sut.execute(guestId)
+    const output = await sut.execute()
 
     expect(output).toEqual(repositoryResponse)
   })

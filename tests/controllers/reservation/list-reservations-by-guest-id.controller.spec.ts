@@ -1,7 +1,7 @@
 import { ListReservationsByGuestIdController } from '@/controllers/reservation/list-reservations-by-guest-id.controller'
 import { HttpRequest } from '@/domain/controller/controller.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { ListReservationsByGuestIdOutput, ListReservationsByGuestIdUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
+import { ListReservationsOutput, ListReservationsByGuestIdUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
 import { mock } from 'jest-mock-extended'
 
 const params: any = {
@@ -9,7 +9,7 @@ const params: any = {
   loggerService: mock<LoggerServiceInterface>()
 }
 
-const useCaseOutput: ListReservationsByGuestIdOutput [] = [
+const useCaseOutput: ListReservationsOutput [] = [
   {
     hotel: {
       name: 'Grand Hotel',

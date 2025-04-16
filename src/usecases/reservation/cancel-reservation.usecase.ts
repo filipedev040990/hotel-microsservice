@@ -4,7 +4,7 @@ import { CacheServiceInterface } from '@/domain/services/cache-service.interface
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { CancelReservationUseCaseInput, CancelReservationUseCaseInterface } from '@/domain/usecases/reservation/cancel-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { HOTELS_CACHE_KEY, PAYMENT_STATUS, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, PAYMENT_STATUS, RESERVATION_CANCELED_BY_CLINET, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class CancelReservationUseCase implements CancelReservationUseCaseInterface {
@@ -23,7 +23,7 @@ export class CancelReservationUseCase implements CancelReservationUseCaseInterfa
   async execute (input: CancelReservationUseCaseInput): Promise<void> {
     try {
       const reservation = await this.getReservation(input)
-      await this.reservationRepository.updateStatus(input.reservationId, RESERVATION_STATUS.CANCELED, PAYMENT_STATUS.REFUNDED)
+      await this.reservationRepository.updateStatus(input.reservationId, RESERVATION_STATUS.CANCELED, PAYMENT_STATUS.REFUNDED, RESERVATION_CANCELED_BY_CLINET)
       await this.roomRepository.updateStatus(reservation.roomId, ROOM_STATUS.AVAILABLE)
       await this.cacheService.del(HOTELS_CACHE_KEY)
     } catch (error) {

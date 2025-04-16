@@ -39,6 +39,9 @@ import { ListReservationsByGuestIdController } from '@/controllers/reservation/l
 import { CancelReservationUseCaseInterface } from '@/domain/usecases/reservation/cancel-reservation-usecase.interface'
 import { CancelReservationUseCase } from '@/usecases/reservation/cancel-reservation.usecase'
 import { CancelReservationController } from '@/controllers/reservation/cancel-reservation.controller'
+import { ListReservationsController } from '@/controllers/reservation/list-reservations.controller'
+import { ListReservationsUseCase } from '@/usecases/reservation/list-reservations.usecase'
+import { ListReservationsUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-usecase.interface'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -65,6 +68,8 @@ export type AppContainer = {
   listReservationsByGuestIController: ControllerInterface
   cancelReservationUseCase: CancelReservationUseCaseInterface
   cancelReservationController: ControllerInterface
+  listReservationsController: ControllerInterface
+  listReservationsUseCase: ListReservationsUseCaseInterface
 }
 
 const container = createContainer()
@@ -80,6 +85,7 @@ container.register({
   checkoutReservationController: asClass(CheckoutReservationController).singleton(),
   listReservationsByGuestIController: asClass(ListReservationsByGuestIdController).singleton(),
   cancelReservationController: asClass(CancelReservationController).singleton(),
+  listReservationsController: asClass(ListReservationsController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -91,6 +97,7 @@ container.register({
   checkoutReservationUseCase: asClass(CheckoutReservationUseCase).singleton(),
   listReservationsByGuestIdUseCase: asClass(ListReservationsByGuestIdUseCase).singleton(),
   cancelReservationUseCase: asClass(CancelReservationUseCase).singleton(),
+  listReservationsUseCase: asClass(ListReservationsUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),

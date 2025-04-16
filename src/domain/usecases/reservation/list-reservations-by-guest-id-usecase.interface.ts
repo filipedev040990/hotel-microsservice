@@ -1,6 +1,6 @@
 import { Address } from '@/domain/entities/hotel/hotel.types'
 
-export type ListReservationsByGuestIdOutput = {
+export type ListReservationsOutput = {
   hotel: {
     name: string
     address: Address
@@ -25,5 +25,5 @@ export type ListReservationsByGuestIdOutput = {
 }
 
 export interface ListReservationsByGuestIdUseCaseInterface {
-  execute: (guestId: string) => Promise<ListReservationsByGuestIdOutput [] | null>
+  execute: (guestId: string) => Promise<ListReservationsOutput [] | null>
 }

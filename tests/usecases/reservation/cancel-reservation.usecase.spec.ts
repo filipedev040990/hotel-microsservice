@@ -108,6 +108,6 @@ describe('CancelReservationUseCase', () => {
     await sut.execute(input)
 
     expect(params.reservationRepository.updateStatus).toBeCalledTimes(1)
-    expect(params.reservationRepository.updateStatus).toBeCalledWith('anyReservationId', 'canceled', 'refunded')
+    expect(params.reservationRepository.updateStatus).toBeCalledWith('anyReservationId', 'canceled', 'refunded', 'Reservation canceled by client')
   })
 })
