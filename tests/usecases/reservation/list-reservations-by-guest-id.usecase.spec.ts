@@ -36,6 +36,7 @@ const repositoryResponse: ListReservationsOutput [] = [
     },
     reservation: {
       id: 'anyReservationId',
+      externalCode: 'anyExternalCode',
       checkIn: '2025-06-15',
       checkOut: '2025-06-20',
       status: 'confirmed',

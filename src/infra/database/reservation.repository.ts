@@ -64,6 +64,7 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     const options: any = {
       select: {
         id: true,
+        externalCode: true,
         checkIn: true,
         checkOut: true,
         status: true,
@@ -132,6 +133,7 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
         },
         reservation: {
           id: reservation.id,
+          externalCode: reservation.externalCode,
           checkIn: reservation.checkIn,
           checkOut: reservation.checkOut,
           status: reservation.status,

@@ -17,6 +17,7 @@ export type ListReservationsOutput = {
   }
   reservation: {
     id: string
+    externalCode: string
     checkIn: string
     checkOut: string
     status: string
