@@ -69,6 +69,7 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
         checkOut: true,
         status: true,
         reason: true,
+        guestId: true,
         room: {
           select: {
             id: true,
@@ -137,7 +138,8 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
           checkIn: reservation.checkIn,
           checkOut: reservation.checkOut,
           status: reservation.status,
-          reason: reservation.reason
+          reason: reservation.reason,
+          guestId: reservation.guestId
         }
       }
     })
