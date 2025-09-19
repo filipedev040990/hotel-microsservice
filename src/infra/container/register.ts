@@ -22,12 +22,10 @@ import { ListHotelsUseCaseInterface } from '@/domain/usecases/hotel/list-hotels-
 import { ListHotelsUseCase } from '@/usecases/hotel/list-hotels.usecase'
 import { ListHotelsController } from '@/controllers/hotel/list-hotels.controller'
 import { ReservartionRepositoryInterface } from '@/domain/repositories/reservation-repository.interface'
-import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { CreateReservationUseCaseInterface } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
 import { CreateReservationController } from '@/controllers/reservation/create-reservation.controller'
 import { ReservationRepository } from '../database/reservation.repository'
-import { PubSubService } from '@/shared/services/pub-sub.service'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { CacheService } from '@/shared/services/cache.service'
 import { CheckoutReservationUseCaseInterface } from '@/domain/usecases/reservation/checkout-reservation-usecase.interface'
@@ -62,7 +60,6 @@ export type AppContainer = {
   createReservationUseCase: CreateReservationUseCaseInterface
   createReservationController: ControllerInterface
   reservationRepository: ReservartionRepositoryInterface
-  pubSubService: PubSubServiceInterface
   cacheService: CacheServiceInterface
   checkoutReservationUseCase: CheckoutReservationUseCaseInterface
   checkoutReservationController: ControllerInterface
@@ -109,7 +106,6 @@ container.register({
 
   // Services
   loggerService: asClass(LoggerService).singleton(),
-  pubSubService: asClass(PubSubService).singleton(),
   cacheService: asClass(CacheService).singleton(),
   queueService: asClass(QueueService).singleton()
 })

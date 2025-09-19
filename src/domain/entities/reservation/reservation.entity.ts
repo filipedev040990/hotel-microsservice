@@ -5,7 +5,7 @@ import { ALLOWED_PAYMENT_METHODS, RESERVATION_STATUS } from '@/shared/constants'
 import { randomUUID } from 'crypto'
 
 export class ReservationEntity {
-  constructor (
+  constructor(
     public readonly id: string,
     public readonly externalCode: string,
     public readonly roomId: string,
@@ -20,7 +20,7 @@ export class ReservationEntity {
     public readonly reason?: string
   ) {}
 
-  public static build (input: BuildReservationEntityInput): ReservationEntity {
+  public static build(input: BuildReservationEntityInput): ReservationEntity {
     this.validateFields(input)
     this.validateChekInAndCheckout(input.checkIn, input.checkOut)
     this.validateEmail(input.guestEmail)
@@ -29,7 +29,7 @@ export class ReservationEntity {
     return this.create(input)
   }
 
-  private static validateFields (input: BuildReservationEntityInput): void {
+  private static validateFields(input: BuildReservationEntityInput): void {
     const requiredFields: Array<keyof BuildReservationEntityInput> = ['roomId', 'checkIn', 'checkOut', 'guestEmail', 'guestId', 'paymentDetails']
 
     for (const field of requiredFields) {
@@ -39,7 +39,7 @@ export class ReservationEntity {
     }
   }
 
-  private static validateChekInAndCheckout (checkIn: string, checkOut: string): void {
+  private static validateChekInAndCheckout(checkIn: string, checkOut: string): void {
     const checkInMs = new Date(checkIn).getTime()
     const checkOutInMs = new Date(checkOut).getTime()
     const todayInMs = new Date().getTime()
@@ -53,13 +53,13 @@ export class ReservationEntity {
     }
   }
 
-  private static validateEmail (email: string): void {
+  private static validateEmail(email: string): void {
     if (!isValidEmail(email)) {
       throw new InvalidParamError('guestEmail')
     }
   }
 
-  private static validatePaymentDetails (paymentDetails: PaymentDetails): void {
+  private static validatePaymentDetails(paymentDetails: PaymentDetails): void {
     const { total, cardToken, paymentMethod } = paymentDetails
 
     if (total < 0) {
@@ -75,7 +75,7 @@ export class ReservationEntity {
     }
   }
 
-  private static create (input: BuildReservationEntityInput): ReservationEntity {
+  private static create(input: BuildReservationEntityInput): ReservationEntity {
     const { roomId, checkIn, checkOut, guestEmail, guestId, paymentDetails } = input
     const id = input.id ?? randomUUID()
     const externalCode = input.externalCode ?? generateExternalCode()
