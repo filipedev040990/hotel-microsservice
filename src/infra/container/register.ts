@@ -42,6 +42,8 @@ import { CancelReservationController } from '@/controllers/reservation/cancel-re
 import { ListReservationsController } from '@/controllers/reservation/list-reservations.controller'
 import { ListReservationsUseCase } from '@/usecases/reservation/list-reservations.usecase'
 import { ListReservationsUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-usecase.interface'
+import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
+import { QueueService } from '@/shared/services/queue.service'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -70,6 +72,7 @@ export type AppContainer = {
   cancelReservationController: ControllerInterface
   listReservationsController: ControllerInterface
   listReservationsUseCase: ListReservationsUseCaseInterface
+  queueService: QueueServiceInterface
 }
 
 const container = createContainer()
@@ -107,7 +110,8 @@ container.register({
   // Services
   loggerService: asClass(LoggerService).singleton(),
   pubSubService: asClass(PubSubService).singleton(),
-  cacheService: asClass(CacheService).singleton()
+  cacheService: asClass(CacheService).singleton(),
+  queueService: asClass(QueueService).singleton()
 })
 
 export { container }

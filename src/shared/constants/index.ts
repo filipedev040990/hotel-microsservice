@@ -14,7 +14,8 @@ export const PAYMENT_STATUS = {
   REFUNDED: 'refunded'
 }
 
-export const RESERVATION_REQUEST_CHANNEL = 'reservation_request'
+export const NEW_RESERVATION_EXCHANGE_NAME = 'new_reservation'
+export const NEW_RESERVATION_ROUNTING_KEY_NAME = 'process_payment'
 
 export const ROOM_STATUS = {
   AVAILABLE: 'available',
@@ -27,3 +28,4 @@ export const HOTELS_CACHE_KEY = 'hotels_list'
 export const REFUSED_PAYMENT = 'Refused payment'
 
 export const RESERVATION_CANCELED_BY_CLINET = 'Reservation canceled by client'
+export const RABBIT_MQ_URI = 'amqp://admin:admin@rabbitmq:5672'

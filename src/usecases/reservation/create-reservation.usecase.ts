@@ -3,36 +3,39 @@ import { ReservartionRepositoryInterface, ReservationRepositoryData } from '@/do
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
-import { CreateReservationUseCaseInput, CreateReservationUseCaseInterface, CreateReservationUseCaseOutput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
+import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
+import {
+  CreateReservationUseCaseInput,
+  CreateReservationUseCaseInterface,
+  CreateReservationUseCaseOutput
+} from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { HOTELS_CACHE_KEY, REFUSED_PAYMENT, PAYMENT_STATUS, RESERVATION_REQUEST_CHANNEL, RESERVATION_STATUS, ROOM_STATUS } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, PAYMENT_STATUS, NEW_RESERVATION_EXCHANGE_NAME, ROOM_STATUS, NEW_RESERVATION_ROUNTING_KEY_NAME } from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'
 
 export class CreateReservationUseCase implements CreateReservationUseCaseInterface {
   private readonly reservationRepository: ReservartionRepositoryInterface
   private readonly roomRepository: RoomRepositoryInterface
-  private readonly pubSubService: PubSubServiceInterface
   private readonly loggerService: LoggerServiceInterface
   private readonly cacheService: CacheServiceInterface
+  private readonly queueService: QueueServiceInterface
 
-  constructor (params: AppContainer) {
+  constructor(params: AppContainer) {
     this.reservationRepository = params.reservationRepository
     this.roomRepository = params.roomRepository
-    this.pubSubService = params.pubSubService
     this.loggerService = params.loggerService
     this.cacheService = params.cacheService
+    this.queueService = params.queueService
   }
 
-  async execute (input: CreateReservationUseCaseInput): Promise<CreateReservationUseCaseOutput> {
+  async execute(input: CreateReservationUseCaseInput): Promise<CreateReservationUseCaseOutput> {
     try {
       const reservation = ReservationEntity.build(input)
 
       await this.checkRoomIsAvailable(reservation.roomId)
       await this.roomRepository.updateStatus(reservation.roomId, ROOM_STATUS.IN_PROCESS_BOOKING)
       await this.saveReservation(reservation)
-      await this.subscribeChannel(reservation)
-      await this.publishMessage(reservation)
+      await this.sendMessage(reservation)
       await this.cacheService.del(HOTELS_CACHE_KEY)
 
       return {
@@ -50,7 +53,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
     }
   }
 
-  async checkRoomIsAvailable (roomId: string): Promise<void> {
+  async checkRoomIsAvailable(roomId: string): Promise<void> {
     const room = await this.reservationRepository.getRoomById(roomId)
 
     if (!room) {
@@ -62,51 +65,10 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
     }
   }
 
-  async subscribeChannel (reservation: ReservationEntity): Promise<void> {
-    const channel = reservation.id
-
-    this.loggerService.info(`Subscribed on channel: ${channel}`)
-
-    await this.pubSubService.subscribe(channel, async (message: string) => {
-      try {
-        let data
-        try {
-          data = JSON.parse(message)
-        } catch (parseError) {
-          this.loggerService.error('Error parsing message', { message, parseError })
-          return
-        }
-
-        let roomStatus
-        let reservationStatus
-        let paymentStatus
-
-        if (data.status === PAYMENT_STATUS.CONFIRMED) {
-          roomStatus = ROOM_STATUS.RESERVED
-          reservationStatus = RESERVATION_STATUS.CONFIRMED
-          paymentStatus = PAYMENT_STATUS.CONFIRMED
-        } else {
-          roomStatus = ROOM_STATUS.AVAILABLE
-          reservationStatus = RESERVATION_STATUS.CANCELED
-          paymentStatus = PAYMENT_STATUS.CANCELED
-        }
-
-        const reason = data.status !== PAYMENT_STATUS.CONFIRMED ? REFUSED_PAYMENT : undefined
-
-        await this.roomRepository.updateStatus(data.roomId, roomStatus)
-        await this.reservationRepository.updateStatus(data.id, reservationStatus, paymentStatus, reason)
-        await this.cacheService.del(HOTELS_CACHE_KEY)
-
-        this.loggerService.info(`Reservation ${reservation.id} updated to status: ${reservationStatus}`)
-      } catch (error) {
-        this.loggerService.error(`Error processing message for reservation ${reservation.id}`, { error })
-      }
-    })
-  }
-
-  async publishMessage (reservation: ReservationEntity): Promise<void> {
+  async sendMessage(reservation: ReservationEntity): Promise<void> {
     try {
-      const channel = RESERVATION_REQUEST_CHANNEL
+      const queueName = NEW_RESERVATION_EXCHANGE_NAME
+      const routingKeyName = NEW_RESERVATION_ROUNTING_KEY_NAME
       const message = JSON.stringify({
         id: reservation.id,
         externalCode: reservation.externalCode,
@@ -120,15 +82,18 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
           total: reservation.paymentDetails.total
         }
       })
-      await this.pubSubService.publish(channel, message)
-      this.loggerService.info('Published message success', { channel, message })
+      await this.queueService.publish(queueName, routingKeyName, message)
+      this.loggerService.info('Published message success', {
+        queueName,
+        message
+      })
     } catch (error) {
       this.loggerService.error('Publish message error', { error })
       throw error
     }
   }
 
-  async saveReservation (reservation: ReservationEntity): Promise<void> {
+  async saveReservation(reservation: ReservationEntity): Promise<void> {
     const repositoryInput: ReservationRepositoryData = {
       id: reservation.id,
       externalCode: reservation.externalCode,

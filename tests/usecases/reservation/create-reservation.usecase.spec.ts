@@ -4,6 +4,7 @@ import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.i
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
+import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
 import { CreateReservationUseCaseInput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
 import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
@@ -15,7 +16,8 @@ const params: any = {
   roomRepository: mock<RoomRepositoryInterface>(),
   pubSubService: mock<PubSubServiceInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
-  cacheService: mock<CacheServiceInterface>()
+  cacheService: mock<CacheServiceInterface>(),
+  queueService: mock<QueueServiceInterface>()
 }
 
 const fakeHotelWithRoom = {
@@ -124,23 +126,27 @@ describe('CreateReservationUseCase', () => {
     expect(params.roomRepository.updateStatus).toHaveBeenCalledWith('anyRoomId', 'in_process_booking')
   })
 
-  test('should call pubSubService.publish once and with correct values', async () => {
+  test('should call queueService.publish once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(params.pubSubService.publish).toHaveBeenCalledTimes(1)
-    expect(params.pubSubService.publish).toHaveBeenCalledWith('reservation_request', JSON.stringify({
-      id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
-      externalCode: 'EXT123456',
-      roomId: 'anyRoomId',
-      checkIn: '2050-12-31',
-      checkOut: '2051-01-07',
-      guestEmail: 'ze@email.com',
-      paymentDetails: {
-        paymentMethod: 'credit_card',
-        cardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
-        total: 250000
-      }
-    }))
+    expect(params.queueService.publish).toHaveBeenCalledTimes(1)
+    expect(params.queueService.publish).toHaveBeenCalledWith(
+      'new_reservation',
+      'process_payment',
+      JSON.stringify({
+        id: 'a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8',
+        externalCode: 'EXT123456',
+        roomId: 'anyRoomId',
+        checkIn: '2050-12-31',
+        checkOut: '2051-01-07',
+        guestEmail: 'ze@email.com',
+        paymentDetails: {
+          paymentMethod: 'credit_card',
+          cardToken: 's13as132ad564w87ef465d4s654d65as465dsfgfmkljpefkffr',
+          total: 250000
+        }
+      })
+    )
   })
 
   test('should return a correct output', async () => {
