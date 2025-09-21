@@ -3,7 +3,6 @@ import { ReservartionRepositoryInterface } from '@/domain/repositories/reservati
 import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.interface'
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
-import { PubSubServiceInterface } from '@/domain/services/pub-sub-service.interface'
 import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
 import { CreateReservationUseCaseInput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
@@ -14,7 +13,6 @@ import MockDate from 'mockdate'
 const params: any = {
   reservationRepository: mock<ReservartionRepositoryInterface>(),
   roomRepository: mock<RoomRepositoryInterface>(),
-  pubSubService: mock<PubSubServiceInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
   cacheService: mock<CacheServiceInterface>(),
   queueService: mock<QueueServiceInterface>()
