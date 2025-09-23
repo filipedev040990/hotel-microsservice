@@ -55,7 +55,8 @@ describe('ConfirmReservationPaymentUseCase', () => {
     input = {
       reservationId: 'anyReservationId',
       roomId: 'anyRoomId',
-      status: 'confirmed'
+      status: 'confirmed',
+      requestId: 'any'
     }
     jest.spyOn(params.roomRepository, 'getById').mockResolvedValue(fakeRoom)
     jest.spyOn(params.reservationRepository, 'getById').mockResolvedValue(fakeReservationEntity)
