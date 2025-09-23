@@ -42,6 +42,10 @@ import { ListReservationsUseCase } from '@/usecases/reservation/list-reservation
 import { ListReservationsUseCaseInterface } from '@/domain/usecases/reservation/list-reservations-usecase.interface'
 import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
 import { QueueService } from '@/shared/services/queue.service'
+import { ConfirmReservationPaymentUseCaseInterface } from '@/domain/usecases/reservation/confirm-reservation-payment-usecase.interface'
+import { ConfirmReservationPaymentUseCase } from '@/usecases/reservation/confirm-reservation-payment.usecase'
+import { ConsumeQueueMessagesInterface } from '@/domain/queue/consume-queue-messages.interface'
+import { ConsumeQueueMessages } from '../queue/consume-queue-messages'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -70,6 +74,8 @@ export type AppContainer = {
   listReservationsController: ControllerInterface
   listReservationsUseCase: ListReservationsUseCaseInterface
   queueService: QueueServiceInterface
+  confirmReservationPaymentUseCase: ConfirmReservationPaymentUseCaseInterface
+  consumeQueueMessages: ConsumeQueueMessagesInterface
 }
 
 const container = createContainer()
@@ -98,6 +104,7 @@ container.register({
   listReservationsByGuestIdUseCase: asClass(ListReservationsByGuestIdUseCase).singleton(),
   cancelReservationUseCase: asClass(CancelReservationUseCase).singleton(),
   listReservationsUseCase: asClass(ListReservationsUseCase).singleton(),
+  confirmReservationPaymentUseCase: asClass(ConfirmReservationPaymentUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),
@@ -107,7 +114,8 @@ container.register({
   // Services
   loggerService: asClass(LoggerService).singleton(),
   cacheService: asClass(CacheService).singleton(),
-  queueService: asClass(QueueService).singleton()
+  queueService: asClass(QueueService).singleton(),
+  consumeQueueMessages: asClass(ConsumeQueueMessages).singleton()
 })
 
 export { container }

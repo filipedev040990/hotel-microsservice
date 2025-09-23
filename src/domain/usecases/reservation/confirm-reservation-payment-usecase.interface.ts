@@ -2,6 +2,8 @@ export type ConfirmReservationPaymentUseCaseInput = {
   reservationId: string
   roomId: string
   status: string
+  requestId: string
+  reason?: string
 }
 
 export interface ConfirmReservationPaymentUseCaseInterface {

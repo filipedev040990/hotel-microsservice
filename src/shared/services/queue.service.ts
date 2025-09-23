@@ -27,7 +27,9 @@ export class QueueService implements QueueServiceInterface {
   }
 
   async publish(exchange: string, routingKey: string, message: string): Promise<boolean> {
-    await this.start()
+    if (!this.channel) {
+      await this.start()
+    }
     await this.channel.assertExchange(exchange, 'direct', { durable: true })
     return this.channel.publish(exchange, routingKey, Buffer.from(message), { persistent: true })
   }

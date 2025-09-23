@@ -38,6 +38,8 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
       await this.sendMessage(reservation)
       await this.cacheService.del(HOTELS_CACHE_KEY)
 
+      this.loggerService.info('Reservation created', { reservationId: reservation.id })
+
       return {
         id: reservation.id,
         roomId: reservation.roomId,
@@ -67,7 +69,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
 
   async sendMessage(reservation: ReservationEntity): Promise<void> {
     try {
-      const queueName = NEW_RESERVATION_EXCHANGE_NAME
+      const exchangeName = NEW_RESERVATION_EXCHANGE_NAME
       const routingKeyName = NEW_RESERVATION_ROUNTING_KEY_NAME
       const message = JSON.stringify({
         id: reservation.id,
@@ -82,11 +84,21 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
           total: reservation.paymentDetails.total
         }
       })
-      await this.queueService.publish(queueName, routingKeyName, message)
-      this.loggerService.info('Published message success', {
-        queueName,
-        message
-      })
+      const isPublished = await this.queueService.publish(exchangeName, routingKeyName, message)
+
+      if (isPublished) {
+        this.loggerService.info('Published message success', {
+          queueExchange: exchangeName,
+          messageContent: message,
+          routingKey: routingKeyName
+        })
+      } else {
+        this.loggerService.info('Published message failed', {
+          queueExchange: exchangeName,
+          messageContent: message,
+          routingKey: routingKeyName
+        })
+      }
     } catch (error) {
       this.loggerService.error('Publish message error', { error })
       throw error

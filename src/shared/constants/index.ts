@@ -4,7 +4,8 @@ export const RESERVATION_STATUS = {
   PROCESSING: 'processing',
   CONFIRMED: 'confirmed',
   CANCELED: 'canceled',
-  FINISHED: 'finished'
+  FINISHED: 'finished',
+  REFUSED: 'refused'
 }
 
 export const PAYMENT_STATUS = {
@@ -29,3 +30,5 @@ export const REFUSED_PAYMENT = 'Refused payment'
 
 export const RESERVATION_CANCELED_BY_CLINET = 'Reservation canceled by client'
 export const RABBIT_MQ_URI = 'amqp://admin:admin@rabbitmq:5672'
+
+export const QUEUES = ['processed_reservation_payment']
