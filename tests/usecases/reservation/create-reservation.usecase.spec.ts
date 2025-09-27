@@ -4,6 +4,7 @@ import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.i
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
+import { ReservationMessagePublisherInterface } from '@/domain/services/reservation-message-publisher-service.interface'
 import { CreateReservationUseCaseInput } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
 import { CreateReservationUseCase } from '@/usecases/reservation/create-reservation.usecase'
@@ -15,7 +16,8 @@ const params: any = {
   roomRepository: mock<RoomRepositoryInterface>(),
   loggerService: mock<LoggerServiceInterface>(),
   cacheService: mock<CacheServiceInterface>(),
-  queueService: mock<QueueServiceInterface>()
+  queueService: mock<QueueServiceInterface>(),
+  reservationMessagePublisher: mock<ReservationMessagePublisherInterface>()
 }
 
 const fakeHotelWithRoom = {

@@ -46,6 +46,11 @@ import { ConfirmReservationPaymentUseCaseInterface } from '@/domain/usecases/res
 import { ConfirmReservationPaymentUseCase } from '@/usecases/reservation/confirm-reservation-payment.usecase'
 import { ConsumeQueueMessagesInterface } from '@/domain/queue/consume-queue-messages.interface'
 import { ConsumeQueueMessages } from '../queue/consume-queue-messages'
+import { ReservationMessagePublisherInterface } from '@/domain/services/reservation-message-publisher-service.interface'
+import { ReservationMessagePublisher } from '@/shared/services/reservation-message-publisher.service'
+import { ResendReservationPaymentMessageUseCaseInterface } from '@/domain/usecases/reservation/resend-reservation-payment-message-usecase.interface'
+import { ResendReservationPaymentMessageUseCase } from '@/usecases/reservation/resend-reservation-payment-message.usecase'
+import { ResendReservationPaymentMessageController } from '@/controllers/reservation/resend-reservation-payment-message.controller'
 
 export type AppContainer = {
   loggerService: LoggerServiceInterface
@@ -76,6 +81,8 @@ export type AppContainer = {
   queueService: QueueServiceInterface
   confirmReservationPaymentUseCase: ConfirmReservationPaymentUseCaseInterface
   consumeQueueMessages: ConsumeQueueMessagesInterface
+  reservationMessagePublisher: ReservationMessagePublisherInterface
+  resendReservationPaymentMessageUseCase: ResendReservationPaymentMessageUseCaseInterface
 }
 
 const container = createContainer()
@@ -92,6 +99,7 @@ container.register({
   listReservationsByGuestIController: asClass(ListReservationsByGuestIdController).singleton(),
   cancelReservationController: asClass(CancelReservationController).singleton(),
   listReservationsController: asClass(ListReservationsController).singleton(),
+  resendReservationPaymentMessageController: asClass(ResendReservationPaymentMessageController).singleton(),
 
   // UseCases
   createHotelUseCase: asClass(CreateHotelUseCase).singleton(),
@@ -105,6 +113,7 @@ container.register({
   cancelReservationUseCase: asClass(CancelReservationUseCase).singleton(),
   listReservationsUseCase: asClass(ListReservationsUseCase).singleton(),
   confirmReservationPaymentUseCase: asClass(ConfirmReservationPaymentUseCase).singleton(),
+  resendReservationPaymentMessageUseCase: asClass(ResendReservationPaymentMessageUseCase).singleton(),
 
   // Repositories
   hotelRepository: asClass(HotelRepository).singleton(),
@@ -115,7 +124,8 @@ container.register({
   loggerService: asClass(LoggerService).singleton(),
   cacheService: asClass(CacheService).singleton(),
   queueService: asClass(QueueService).singleton(),
-  consumeQueueMessages: asClass(ConsumeQueueMessages).singleton()
+  consumeQueueMessages: asClass(ConsumeQueueMessages).singleton(),
+  reservationMessagePublisher: asClass(ReservationMessagePublisher).singleton()
 })
 
 export { container }

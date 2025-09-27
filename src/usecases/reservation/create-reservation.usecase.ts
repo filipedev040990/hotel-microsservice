@@ -4,13 +4,14 @@ import { RoomRepositoryInterface } from '@/domain/repositories/room-repository.i
 import { CacheServiceInterface } from '@/domain/services/cache-service.interface'
 import { LoggerServiceInterface } from '@/domain/services/logger-service.interface'
 import { QueueServiceInterface } from '@/domain/services/queue-service.interface'
+import { ReservationMessagePublisherInterface } from '@/domain/services/reservation-message-publisher-service.interface'
 import {
   CreateReservationUseCaseInput,
   CreateReservationUseCaseInterface,
   CreateReservationUseCaseOutput
 } from '@/domain/usecases/reservation/create-reservation-usecase.interface'
 import { AppContainer } from '@/infra/container/register'
-import { HOTELS_CACHE_KEY, PAYMENT_STATUS, NEW_RESERVATION_EXCHANGE_NAME, ROOM_STATUS, NEW_RESERVATION_ROUNTING_KEY_NAME } from '@/shared/constants'
+import { HOTELS_CACHE_KEY, PAYMENT_STATUS, ROOM_STATUS } from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'
 
 export class CreateReservationUseCase implements CreateReservationUseCaseInterface {
@@ -19,6 +20,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
   private readonly loggerService: LoggerServiceInterface
   private readonly cacheService: CacheServiceInterface
   private readonly queueService: QueueServiceInterface
+  private readonly reservationMessagePublisher: ReservationMessagePublisherInterface
 
   constructor(params: AppContainer) {
     this.reservationRepository = params.reservationRepository
@@ -26,6 +28,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
     this.loggerService = params.loggerService
     this.cacheService = params.cacheService
     this.queueService = params.queueService
+    this.reservationMessagePublisher = params.reservationMessagePublisher
   }
 
   async execute(input: CreateReservationUseCaseInput): Promise<CreateReservationUseCaseOutput> {
@@ -35,7 +38,7 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
       await this.checkRoomIsAvailable(reservation.roomId)
       await this.roomRepository.updateStatus(reservation.roomId, ROOM_STATUS.IN_PROCESS_BOOKING)
       await this.saveReservation(reservation)
-      await this.sendMessage(reservation)
+      await this.reservationMessagePublisher.publishNewReservation(reservation)
       await this.cacheService.del(HOTELS_CACHE_KEY)
 
       this.loggerService.info('Reservation created', { reservationId: reservation.id })
@@ -67,44 +70,6 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
     }
   }
 
-  async sendMessage(reservation: ReservationEntity): Promise<void> {
-    try {
-      const exchangeName = NEW_RESERVATION_EXCHANGE_NAME
-      const routingKeyName = NEW_RESERVATION_ROUNTING_KEY_NAME
-      const message = JSON.stringify({
-        id: reservation.id,
-        externalCode: reservation.externalCode,
-        roomId: reservation.roomId,
-        checkIn: reservation.checkIn,
-        checkOut: reservation.checkOut,
-        guestEmail: reservation.guestEmail,
-        paymentDetails: {
-          paymentMethod: reservation.paymentDetails.paymentMethod,
-          cardToken: reservation.paymentDetails.cardToken,
-          total: reservation.paymentDetails.total
-        }
-      })
-      const isPublished = await this.queueService.publish(exchangeName, routingKeyName, message)
-
-      if (isPublished) {
-        this.loggerService.info('Published message success', {
-          queueExchange: exchangeName,
-          messageContent: message,
-          routingKey: routingKeyName
-        })
-      } else {
-        this.loggerService.info('Published message failed', {
-          queueExchange: exchangeName,
-          messageContent: message,
-          routingKey: routingKeyName
-        })
-      }
-    } catch (error) {
-      this.loggerService.error('Publish message error', { error })
-      throw error
-    }
-  }
-
   async saveReservation(reservation: ReservationEntity): Promise<void> {
     const repositoryInput: ReservationRepositoryData = {
       id: reservation.id,
@@ -120,7 +85,8 @@ export class CreateReservationUseCase implements CreateReservationUseCaseInterfa
       paymentTotal: reservation.paymentDetails.total,
       status: reservation.status,
       createdAt: reservation.createdAt,
-      updatedAt: reservation.updatedAt
+      updatedAt: reservation.updatedAt,
+      reason: null
     }
 
     await this.reservationRepository.save(repositoryInput)

@@ -13,7 +13,7 @@ export type ReservationRepositoryData = {
   paymentCardToken: string
   paymentStatus: string
   status: string
-  reason?: string
+  reason: string | null
   createdAt: Date
   updatedAt: Date
 }
@@ -28,5 +28,6 @@ export interface ReservartionRepositoryInterface {
   getRoomById: (roomId: string) => Promise<HotelWithRoomData | null>
   updateStatus: (reservationId: string, status: string, paymentStatus?: string, reason?: string) => Promise<void>
   getById: (reservationId: string) => Promise<ReservationRepositoryData | null>
-  get: (guestId?: string) => Promise<ListReservationsOutput [] | null>
+  get: (guestId?: string) => Promise<ListReservationsOutput[] | null>
+  getByStatus: (status: string) => Promise<ReservationRepositoryData[] | null>
 }

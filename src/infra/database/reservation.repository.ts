@@ -3,11 +3,21 @@ import { prismaClient } from './prisma-client'
 import { ListReservationsOutput } from '@/domain/usecases/reservation/list-reservations-by-guest-id-usecase.interface'
 
 export class ReservationRepository implements ReservartionRepositoryInterface {
-  async save (data: ReservationRepositoryData): Promise<void> {
+  async getByStatus(status: string): Promise<ReservationRepositoryData[] | null> {
+    const reservations = await prismaClient.reservation.findMany({ where: { status } })
+
+    if (!reservations.length) {
+      return null
+    }
+
+    return reservations
+  }
+
+  async save(data: ReservationRepositoryData): Promise<void> {
     await prismaClient.reservation.create({ data })
   }
 
-  async getRoomById (roomId: string): Promise<HotelWithRoomData | null> {
+  async getRoomById(roomId: string): Promise<HotelWithRoomData | null> {
     const room = await prismaClient.room.findFirst({ where: { id: roomId } })
 
     if (!room) {
@@ -20,8 +30,12 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     }
   }
 
-  async updateStatus (reservationId: string, status: string, paymentStatus?: string, reason?: string): Promise<void> {
-    const data: { status: string, paymentStatus?: string, reason?: string } = { status: status }
+  async updateStatus(reservationId: string, status: string, paymentStatus?: string, reason?: string): Promise<void> {
+    const data: {
+      status: string
+      paymentStatus?: string
+      reason?: string
+    } = { status: status }
 
     if (paymentStatus) {
       data.paymentStatus = paymentStatus
@@ -34,33 +48,17 @@ export class ReservationRepository implements ReservartionRepositoryInterface {
     await prismaClient.reservation.update({ where: { id: reservationId }, data })
   }
 
-  async getById (reservationId: string): Promise<ReservationRepositoryData | null> {
+  async getById(reservationId: string): Promise<ReservationRepositoryData | null> {
     const reservation = await prismaClient.reservation.findFirst({ where: { id: reservationId } })
 
     if (!reservation) {
       return null
     }
 
-    return {
-      id: reservation.id,
-      checkIn: reservation.checkIn,
-      checkOut: reservation.checkOut,
-      externalCode: reservation.externalCode,
-      guestEmail: reservation.guestEmail,
-      guestId: reservation.guestId,
-      paymentCardToken: reservation.paymentCardToken,
-      paymentMethod: reservation.paymentCardToken,
-      status: reservation.status,
-      reason: reservation.reason ?? undefined,
-      roomId: reservation.roomId,
-      paymentStatus: reservation.paymentStatus,
-      paymentTotal: reservation.paymentTotal,
-      createdAt: reservation.createdAt,
-      updatedAt: reservation.updatedAt
-    }
+    return reservation
   }
 
-  async get (guestId?: string): Promise<ListReservationsOutput[] | null> {
+  async get(guestId?: string): Promise<ListReservationsOutput[] | null> {
     const options: any = {
       select: {
         id: true,

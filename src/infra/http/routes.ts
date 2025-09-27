@@ -10,35 +10,16 @@ const router = Router()
 router.use(requestIdMiddleware)
 
 // Hotel
-router.post(
-  '/hotel',
-  validateSchema('createHotelSchema'),
-  expressRouteAdapter(container.resolve('createHotelController'))
-)
+router.post('/hotel', validateSchema('createHotelSchema'), expressRouteAdapter(container.resolve('createHotelController')))
 
-router.patch(
-  '/hotel/:id',
-  validateSchema('updateHotelSchema'),
-  expressRouteAdapter(container.resolve('updateHotelController'))
-)
+router.patch('/hotel/:id', validateSchema('updateHotelSchema'), expressRouteAdapter(container.resolve('updateHotelController')))
 
-router.get(
-  '/hotel/:id?',
-  expressRouteAdapter(container.resolve('listHotelsController'))
-)
+router.get('/hotel/:id?', expressRouteAdapter(container.resolve('listHotelsController')))
 
 // Room
-router.post(
-  '/room',
-  validateSchema('createRoomSchema'),
-  expressRouteAdapter(container.resolve('createRoomController'))
-)
+router.post('/room', validateSchema('createRoomSchema'), expressRouteAdapter(container.resolve('createRoomController')))
 
-router.patch(
-  '/room/:id',
-  validateSchema('updateRoomSchema'),
-  expressRouteAdapter(container.resolve('updateRoomController'))
-)
+router.patch('/room/:id', validateSchema('updateRoomSchema'), expressRouteAdapter(container.resolve('updateRoomController')))
 
 // Reservations
 router.post(
@@ -48,26 +29,18 @@ router.post(
   expressRouteAdapter(container.resolve('createReservationController'))
 )
 
-router.put(
-  '/room/reservation/checkout/:id',
-  expressRouteAdapter(container.resolve('checkoutReservationController'))
-)
+router.put('/room/reservation/checkout/:id', expressRouteAdapter(container.resolve('checkoutReservationController')))
+
+router.get('/room/reservation/me', validateTokenMiddleware, expressRouteAdapter(container.resolve('listReservationsByGuestIController')))
 
 router.get(
-  '/room/reservation/me',
+  '/room/reservations/resend-messages',
   validateTokenMiddleware,
-  expressRouteAdapter(container.resolve('listReservationsByGuestIController'))
+  expressRouteAdapter(container.resolve('resendReservationPaymentMessageController'))
 )
 
-router.get(
-  '/room/reservations',
-  expressRouteAdapter(container.resolve('listReservationsController'))
-)
+router.get('/room/reservations', expressRouteAdapter(container.resolve('listReservationsController')))
 
-router.put(
-  '/room/reservation/cancel/:id',
-  validateTokenMiddleware,
-  expressRouteAdapter(container.resolve('cancelReservationController'))
-)
+router.put('/room/reservation/cancel/:id', validateTokenMiddleware, expressRouteAdapter(container.resolve('cancelReservationController')))
 
 export { router }
